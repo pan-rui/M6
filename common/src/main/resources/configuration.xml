@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- "configuration" must match "(properties?,settings?,typeAliases?,typeHandlers?,objectFactory?,objectWrapperFactory?,plugins?,environments?,mappers?)". -->
+
+    <properties>
+        <property name="dialect" value="MYSQL"/>
+        <!--<property name="pageSqlId" value=".*Page$" />-->
+    </properties>
+
+    <settings>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--延迟加载时按需加载属性-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+        <!-- 全局映射器启用缓存 -->
+        <setting name="cacheEnabled" value="true"/>
+        <!-- 对于未知的SQL查询，允许返回不同的结果集以达到通用的效果 -->
+        <setting name="multipleResultSetsEnabled" value="true"/>
+
+        <!-- 允许使用列标签代替列名 -->
+        <setting name="useColumnLabel" value="true"/>
+        <!-- 给予被嵌套的resultMap以字段-属性的映射支持 FULL,PARTIAL -->
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <setting name="localCacheScope" value="SESSION"/>
+        <!-- Specifies which Object's methods trigger a lazy load -->
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+    </settings>
+
+    <!--	<typeAliases>
+
+            <typeAlias alias="cart" type="com.yihaoo.pojo.Cart"/>
+        </typeAliases>-->
+    <typeHandlers>
+        <typeHandler handler="org.apache.ibatis.type.ObjectTypeHandler"/>
+    </typeHandlers>
+
+    <plugins>
+        <plugin interceptor="com.yanguan.device.util.UpdateIntercept">
+            <property name="dialect" value="mysql"/>
+            <property name="sqlId" value="^update.+Tab$"/>
+            <!--<property name="cacheSql" value="^update.*Cache$" />-->
+        </plugin>
+    </plugins>
+    <!--
+        <mappers>
+            <mapper resource="mapping/cart.xml"/>
+        </mappers>-->
+
+</configuration>

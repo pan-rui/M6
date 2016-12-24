@@ -1,0 +1,72 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/cache 
+        http://www.springframework.org/schema/cache/spring-cache.xsd">
+    <!-- =================Spring data REDIS configuration =============================== -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="50"></property>
+        <property name="maxIdle" value="6"></property>
+        <property name="maxWaitMillis" value="15000"></property>
+        <property name="minEvictableIdleTimeMillis" value="300000"></property>
+        <property name="numTestsPerEvictionRun" value="3"></property>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"></property>
+    </bean>
+    <bean id="jedisConnectionFactory"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          destroy-method="destroy">
+        <property name="poolConfig" ref="jedisPoolConfig"></property>
+        <property name="hostName" value="${cache.host}"></property>
+        <property name="port" value="${cache.port}"></property>
+        <property name="password" value="${cache.password}"></property>
+        <property name="timeout" value="15000"></property>
+        <property name="usePool" value="true"></property>
+    </bean>
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"></property>
+                <property name="keySerializer">
+                    <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+                </property>
+                <property name="hashKeySerializer">
+                    <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+                </property>
+                <property name="valueSerializer">
+                    <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>
+                </property>
+                <property name="hashValueSerializer">
+                    <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>
+                </property>
+    </bean>
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool" c:poolConfig-ref="jedisPoolConfig"
+          c:host="${cache.host}" c:password="${cache.password}" c:port="${cache.port}" c:timeout="15000"/>
+    <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager"
+          c:redisOperations-ref="redisTemplate">
+        <property name="cacheNames">
+            <set>
+                <value>tmp</value>
+                <value>common</value>
+                <value>system</value>
+                <value>schedu</value>
+            </set>
+        </property>
+        <property name="expires">
+            <map>
+                <entry key="tmp" value="900"/><!--15分钟-->
+                <entry key="common" value="3600"/><!--1小时-->
+                <entry key="system" value="14400"/><!--4小时-->
+                <entry key="schedu" value="30"/><!--12小时-->
+            </map>
+        </property>
+        <property name="defaultExpiration" value="30"/>
+    </bean>
+
+    <!-- turn on declarative caching -->
+    <cache:annotation-driven proxy-target-class="true" cache-manager="cacheManager"/>
+</beans>

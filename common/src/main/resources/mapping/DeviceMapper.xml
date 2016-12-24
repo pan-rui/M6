@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yanguan.device.dao.DeviceMapper">
+    <select id="queryByProsInTab" parameterType="map" resultType="map">
+        select * FROM ${tableName}
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+    <select id="queryAllInTab" parameterType="map" resultType="map">
+        select * from ${tableName}
+    </select>
+    <update id="updateByProsInTab" parameterType="map">
+        UPDATE ${tableName}
+        <trim prefix="set" prefixOverrides=",">
+            <foreach collection="params" item="item" index="key" separator=",">
+                ${key}=#{item}
+            </foreach>
+        </trim>
+    </update>
+    <delete id="deleteByProsInTab" parameterType="map">
+        delete from ${tableName}
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </delete>
+    <insert id="insertByProsInTab" parameterType="map">
+        insert into ${tableName}
+         <trim prefix="(" suffix=")" suffixOverrides=",">
+             <foreach collection="params.keys" item="key" index="ind" separator=",">
+                 ${key}
+             </foreach>
+         </trim>
+        <trim prefix=" values(" suffix=")" suffixOverrides=",">
+            <foreach collection="params.values" item="value" index="ind" separator=",">
+                #{value}
+            </foreach>
+        </trim>
+    </insert>
+</mapper>

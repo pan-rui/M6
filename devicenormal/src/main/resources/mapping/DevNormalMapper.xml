@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yanguan.device.dao.DevNormalMapper">
+<!--    <update id="updateByProsInTab" parameterType="map">
+        UPDATE ${tableName}
+        <trim prefix="set" prefixOverrides=",">
+            <foreach collection="params" item="item" index="key" separator=",">
+                ${key}=#{item}
+            </foreach>
+        </trim>
+    </update>-->
+    <update id="cardActive" parameterType="string" statementType="PREPARED">
+        UPDATE yanguan.YG_IoT_Card SET Active_Time=IFNULL(Active_Time,CURRENT_TIMESTAMP) WHERE Iccid=#{iccid}
+    </update>
+</mapper>
