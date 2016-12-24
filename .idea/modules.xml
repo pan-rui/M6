@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/M6.iml" filepath="$PROJECT_DIR$/M6.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/devicenormal/devicenormal.iml" filepath="$PROJECT_DIR$/devicenormal/devicenormal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deviceschedu/deviceschedu.iml" filepath="$PROJECT_DIR$/deviceschedu/deviceschedu.iml" />
+    </modules>
+  </component>
+</project>
