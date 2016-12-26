@@ -94,7 +94,7 @@ public class GpsWriteDB implements InitializingBean {
                         statements[i].executeBatch();
                     } catch (SQLException e) {
                         e.printStackTrace();
-                        logger.error("insert cmds data is error....");
+                        logger.error("insert gpss data is error....");
                     } finally {
                         closeDBC(connections[i], statements[i]);
                     }

@@ -2,17 +2,13 @@ package com.yanguan.device.handle;
 
 import com.yanguan.device.cmd.IProcess;
 import com.yanguan.device.model.ProtocolEnum;
-import com.yanguan.device.nio.IdleHandler;
 import com.yanguan.device.vo.DeviceStatus;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

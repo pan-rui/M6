@@ -96,7 +96,7 @@ public class RmdWriteDB implements InitializingBean {
                         statements[i].executeBatch();
                     } catch (SQLException e) {
                         e.printStackTrace();
-                        logger.error("insert cmds data is error....");
+                        logger.error("insert rmds data is error....");
                     } finally {
                         closeDBC(connections[i], statements[i]);
                     }

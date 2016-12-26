@@ -1,9 +1,15 @@
 package com.yanguan.device;
 
+import com.yanguan.device.handle.IdleHandler;
 import com.yanguan.device.nio.NettyServer;
+import com.yanguan.device.vo.DeviceStatus;
+import io.netty.channel.Channel;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,11 +20,10 @@ import java.util.concurrent.TimeUnit;
  * @UpdateDateTime: \$Date$
  */
 public class Application {
+    private static final Logger logger = Logger.getLogger(Application.class);
     private static Application application;
-    /**
-     * Application context
-     */
     private ApplicationContext appContext;
+    private static ScheduledExecutorService schedu;
     /**
      * Get application instance
      *
@@ -28,7 +33,6 @@ public class Application {
         if (application == null) {
             application = new Application();
         }
-
         return application;
     }
 
@@ -40,7 +44,9 @@ public class Application {
     public ApplicationContext getAppContext() {
         return appContext;
     }
-
+    public synchronized static ScheduledExecutorService getSchedu() {
+        return schedu == null ? (schedu = Executors.newScheduledThreadPool(3)) : schedu;
+    }
 
     /**
      * start the command service
@@ -51,9 +57,35 @@ public class Application {
         });
 
         NettyServer server = appContext.getBean(NettyServer.class);
+        getSchedu().scheduleAtFixedRate(new Runnable() {
+            private Runnable runnable;
 
+            {
+                runnable = this;
+            }
+
+            @Override
+            public void run() {
+                logger.info("offine device .....");
+                long curTime = System.currentTimeMillis();
+                for (int devId : IdleHandler.getConnectionMap().keySet()) {
+                    DeviceStatus status = IdleHandler.getDeviceStatuss().get(devId);
+                    if (status != null && curTime - status.getLastSendTime() >= server.getWriteIdle()) {
+                        IdleHandler.getConnectionMap().remove(devId);
+                        IdleHandler.getDeviceStatuss().remove(devId);
+                    }
+                }
+                Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+                    @Override
+                    public void uncaughtException(Thread t, Throwable e) {
+                        e.printStackTrace();
+                        getSchedu().scheduleAtFixedRate(runnable, server.getWriteIdle(), server.getWriteIdle(), TimeUnit.SECONDS);
+                    }
+                });
+            }
+        }, server.getWriteIdle(), server.getWriteIdle(), TimeUnit.SECONDS);
         try {
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

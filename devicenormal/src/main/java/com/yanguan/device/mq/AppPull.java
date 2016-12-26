@@ -1,14 +1,12 @@
 package com.yanguan.device.mq;
 
 import com.yanguan.device.model.Constant;
-import com.yanguan.device.model.ProtocolEnum;
-import com.yanguan.device.nio.IdleHandler;
+import com.yanguan.device.handle.IdleHandler;
 import com.yanguan.device.task.CmdWriteDB;
 import io.netty.channel.Channel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 import javax.jms.JMSException;
@@ -16,7 +14,6 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;

@@ -12,6 +12,7 @@
         <module>common</module>
         <module>deviceschedu</module>
         <module>devicenormal</module>
+        <module>devicegps</module>
     </modules>
     <properties>
         <!--<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>-->

@@ -3,6 +3,7 @@ package com.yanguan.device.nio;
 
 import com.yanguan.device.decoder.M6Decoder;
 import com.yanguan.device.encoder.M6Encoder;
+import com.yanguan.device.handle.IdleHandler;
 import com.yanguan.device.handle.ServerHandle;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -15,9 +16,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -31,7 +30,6 @@ import org.springframework.stereotype.Controller;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -57,7 +55,7 @@ public class NettyServer {
     private int maxSize;
     @Value("#{config['nio.keepAlive']?:30000}")
     private long keepAlive;
-    @Value("#{config['nio.writeIdle']?:120}")
+    @Value("#{config['nio.writeIdle']?:0}")
     private long writeIdle = 120;
     @Value("#{config['nio.readIdle']?:60}")
     private long readIdle = 60;
@@ -73,6 +71,14 @@ public class NettyServer {
     private ServerHandle serverHandle;
     @Autowired
     private IdleHandler idleHandler;
+
+    public long getWriteIdle() {
+        return writeIdle;
+    }
+
+    public long getReadIdle() {
+        return readIdle;
+    }
 
     @PostConstruct
     public void initialize() {
@@ -108,7 +114,7 @@ public class NettyServer {
             @Override
             public void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
-                pipeline.addLast(new IdleStateHandler(readIdle, writeIdle, allIdle, TimeUnit.SECONDS));
+                pipeline.addLast(new IdleStateHandler(readIdle, 0, allIdle, TimeUnit.SECONDS));
                 pipeline.addLast(idleHandler);
                 pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(10240, 0, 2, 0, 2));
                 pipeline.addLast("frameEncoder", new LengthFieldPrepender(2,false));//生成的长度值不包含长度本身的长度

@@ -12,10 +12,10 @@
         http://www.springframework.org/schema/cache/spring-cache.xsd">
     <!-- =================Spring data REDIS configuration =============================== -->
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="50"></property>
-        <property name="maxIdle" value="6"></property>
-        <property name="maxWaitMillis" value="15000"></property>
-        <property name="minEvictableIdleTimeMillis" value="300000"></property>
+        <property name="maxTotal" value="${cache.maxTotal}"></property>
+        <property name="maxIdle" value="${cache.maxIdle}"></property>
+        <property name="maxWaitMillis" value="${cache.maxWaitMillis}"></property>
+        <property name="minEvictableIdleTimeMillis" value="${cache.minEvictableIdleTimeMillis}"></property>
         <property name="numTestsPerEvictionRun" value="3"></property>
         <property name="timeBetweenEvictionRunsMillis" value="60000"></property>
     </bean>
