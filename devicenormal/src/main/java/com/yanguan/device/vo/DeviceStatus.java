@@ -20,6 +20,10 @@ private int devId;
         this.devId = devId;
     }
 
+    public DeviceStatus(long lastSendTime) {
+        this.lastSendTime = lastSendTime;
+    }
+
     public long getOnLineTime() {
         return onLineTime;
     }

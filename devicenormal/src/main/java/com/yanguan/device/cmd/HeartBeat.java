@@ -30,9 +30,9 @@ public class HeartBeat implements IProcess {
     public void process(Channel channel, Map<String, Object> data) {
         int devId= (int)data.get("devId");
         logger.info("heartBeat.....in the DeviceID:"+devId);
-        String gpsSignal = String.valueOf(data.get("gpsSignal"));
+        String gsmSignal = String.valueOf(data.get("gsmSignal"));
         Jedis jedis=Constant.jedisPool.getResource();
-        jedis.hset(Constant.HeartBeat,String.valueOf(data.get("devId")), gpsSignal);
+        jedis.hset(Constant.HeartBeat,String.valueOf(data.get("devId")), gsmSignal);
         jedis.close();
         idleHandler.putDevice(devId, channel);
         channel.writeAndFlush(data.get("iType")+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success);

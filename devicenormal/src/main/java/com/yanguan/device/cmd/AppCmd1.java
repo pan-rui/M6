@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Description: ${Description}
@@ -30,19 +31,20 @@ public class AppCmd1 implements IProcess {
     private DeviceMapper deviceMapper;
     @Autowired
     private AppPush appPush;
+
     @Override
     public void process(Channel channel, Map<String, Object> data) {
-        int devId= (int)data.get("devId");
+        int devId = (int) data.get("devId");
         int cmdType = (int) data.get("cmdType");
-        int resultCode = (int) data.get("resultCode");
+        int resultCode = (int) data.remove("resultCode");
         Calendar calendar = Calendar.getInstance();
-        appPush.sendMessage(devId, resultCode, calendar.getTimeInMillis());
-        Object val=data.get("p1");
-        if(resultCode==0) {
+        appPush.sendMessage(devId, resultCode, calendar.getTimeInMillis(), null);
+        Object val = data.get("p1");
+        if (resultCode == 0) {
             Map<String, Object> params = new LinkedHashMap<>();
             switch (cmdType) {
                 case 1:     //解设防
-                    params.put("Device_Defence_Status",val );
+                    params.put("Device_Defence_Status", val);
                     params.put("Device_Defence_Upd_Time", calendar.getTime());
                     break;
                 case 2:     //启动电源
@@ -94,15 +96,24 @@ public class AppCmd1 implements IProcess {
                 deviceMapper.updateByProsInTab(params, Constant.DEVICE_TABLE_REF);
             } catch (Exception e) {
                 e.printStackTrace();
-                logger.error("update Status Fail..the DeviceID:"+devId);
+                logger.error("update Status Fail..the DeviceID:" + devId);
             }
         }
         synchronized (CmdWriteDB.cmdList) {
-            CmdWriteDB.cmdList.add(resultCode + Constant.SPLIT_CHAR);
+            CmdWriteDB.cmdList.add(resultCode + generateStatus(data));
         }
     }
 
-    public String generateStatus(Map<String, Object> map) {
-        return null;
+    public static String generateStatus(Map<String, Object> map) {
+        StringBuffer sb = new StringBuffer();
+/*        sb.append(map.get("iType")).append(Constant.SPLIT_CHAR)
+                .append(map.get("pName")).append(Constant.SPLIT_CHAR)
+                .append(map.get("sVer")).append(Constant.SPLIT_CHAR)
+                .append(map.get("devId")).append(Constant.SPLIT_CHAR)
+                .append(map.get("cmdType")).append()*/
+//        Set<Map.Entry<String,Object>> entrySet = map.entrySet();
+//        entrySet.remove(entrySet.toArray()[entrySet.size() - 1]);
+        map.forEach((k, v) -> sb.append(Constant.SPLIT_CHAR).append(v));
+        return sb.toString();
     }
 }

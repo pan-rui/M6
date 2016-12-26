@@ -77,7 +77,7 @@ public class AppPull implements MessageListener{
         sendExecutor.submit(new Runnable() {
             @Override
             public void run() {
-                int devId = Integer.parseInt(dataArr[4]);
+                int devId = Integer.parseInt(dataArr[3]);
                 Channel channel=IdleHandler.getConnectionMap().get(devId);
                 final long currentMillis=System.currentTimeMillis();
                 if(channel!=null && channel.isActive()&&channel.isOpen()&&channel.isWritable()){        //在线
@@ -94,7 +94,7 @@ public class AppPull implements MessageListener{
                                 }
                                 if (future.cause() != null) {
                                     resultCode = "9";
-                                    appPush.sendMessage(devId,Constant.Push_Cmd_Fail,currentMillis);
+                                    appPush.sendMessage(devId,Constant.Push_Cmd_Fail,currentMillis,null);
                                     logger.error("Send packet to the device failed.cmd: " +dataStr);
                                 }
                                 synchronized(CmdWriteDB.cmdList) {
@@ -113,7 +113,7 @@ public class AppPull implements MessageListener{
                             jedis.close();
                     }
                     IdleHandler.getConnectionMap().remove(devId);
-                    appPush.sendMessage(devId,Constant.Push_OffineLine,currentMillis);
+                    appPush.sendMessage(devId,Constant.Push_OffineLine,currentMillis,null);
                     logger.info("app send Cmd is Fail.For device offineLine.the cmd:"+dataStr);
                 }
             }

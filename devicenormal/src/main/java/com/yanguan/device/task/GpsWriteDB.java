@@ -5,7 +5,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,11 +22,11 @@ import java.util.concurrent.TimeUnit;
  * Created by panrui on 2016/5/30.
  */
 @Component
-public class RmdWriteDB implements InitializingBean {
-    private static final Logger logger = Logger.getLogger(RmdWriteDB.class);
+public class GpsWriteDB implements InitializingBean {
+    private static final Logger logger = Logger.getLogger(GpsWriteDB.class);
     private static ScheduledExecutorService timer;
     private static Runnable timerTask;
-    @Value("#{config['cmd.write.interval']}")
+    @Value("#{config['gps.write.interval']}")
     private int interval;
     @Value("#{config['jdbc.username']}")
     private String userName;
@@ -43,7 +42,7 @@ public class RmdWriteDB implements InitializingBean {
     private String mysqlDriver = "com.mysql.jdbc.Driver";
     private SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
-    public static final LinkedList<Object[]> rmdList = new LinkedList<>();
+    public static final LinkedList<Object[]> gpsList = new LinkedList<>();
 
     public synchronized static ScheduledExecutorService getTimer() {
         return timer == null ? (timer = Executors.newSingleThreadScheduledExecutor()) : timer;
@@ -67,23 +66,23 @@ public class RmdWriteDB implements InitializingBean {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Cmd 定时任务启动.......");
+                System.out.println("Gps 定时任务启动.......");
                 Connection[] connections = new Connection[size];
                 Statement[] statements = new Statement[size];
                 getConnections(connections, statements, null, size);
                 if (connections[size - 1] == null) return;
                 Calendar calendar = Calendar.getInstance();
-                String sqlPrefix = "INSERT ignore YG_RMD.rmd" + format.format(calendar.getTime()) + "(devId,rmdType, gps_lng, gps_lat, time) VALUES (";
+                String sqlPrefix = "INSERT ignore YG_GPS.gps"+format.format(calendar.getTime())+"(devId,time, gps_lng, gps_lat) VALUES (";
                 int count = 0;
-                while (!rmdList.isEmpty() && count <= 100000) {
-                    Object[] cmd = null;
-                    synchronized (rmdList) {
-                        cmd = rmdList.remove();
+                while (!gpsList.isEmpty() && count <= 100000) {
+                    Object[] gps = null;
+                    synchronized (gpsList) {
+                        gps = gpsList.remove();
                     }
                     count++;
-                    int devId = (int) cmd[0], index = devId % size;
+                    int devId = (int) gps[0], index = devId % size;
                     StringBuffer sb = new StringBuffer(sqlPrefix);
-                    sb.append(devId).append(",").append(cmd[1]).append(",").append(cmd[2]).append(",").append(cmd[3]).append(",").append("from_unixtime(" + cmd[4] + ")").append(")");
+                    sb.append(devId).append(",").append("from_unixtime(" + gps[3] + "),").append(gps[1]).append(",").append(gps[2]).append(")");
                     try {
                         statements[index].addBatch(sb.toString());
                     } catch (SQLException e) {
@@ -91,7 +90,6 @@ public class RmdWriteDB implements InitializingBean {
                     }
                 }
                 for (int i = 0; i < size; i++) {
-
                     try {
                         statements[i].executeBatch();
                     } catch (SQLException e) {
@@ -102,12 +100,12 @@ public class RmdWriteDB implements InitializingBean {
                     }
                 }
                 System.gc();
-                logger.debug("RMD批量写入MySQL成功........");
+                logger.debug("GPS批量写入MySQL成功........");
                 Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
                     @Override
                     public void uncaughtException(Thread t, Throwable e) {
                         e.printStackTrace();
-                        logger.error("rmd save to MySQL Thread Exception." + e.getMessage());
+                        logger.error("gps save to MySQL Thread Exception." + e.getMessage());
                         getTimer().scheduleAtFixedRate(getTimerTask(), 5000, interval, TimeUnit.MILLISECONDS);
 //                            t.run();
                     }

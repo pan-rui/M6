@@ -70,8 +70,9 @@ public class IdleHandler extends ChannelDuplexHandler {
             jedis.hdel(Constant.Device_Is_OnLine, String.valueOf(ent.getKey()));
             jedis.close();
             Calendar calendar=Calendar.getInstance();
+            deviceStatuss.remove(ent.getKey());
             //入队推送
-            appPush.sendMessage(ent.getKey(),Constant.Push_OffineLine,calendar.getTimeInMillis());
+            appPush.sendMessage(ent.getKey(),Constant.Push_OffineLine,calendar.getTimeInMillis(),null);
             //写库
             try {
                 Map<String, Object> params = new LinkedHashMap<>();
@@ -90,8 +91,12 @@ public class IdleHandler extends ChannelDuplexHandler {
     public boolean putDevice(int devId, Channel channel) {
         Channel channel1=connectionMap.putIfAbsent(devId, channel);
         if(channel1==null){
+            Jedis jedis=Constant.jedisPool.getResource();
+            jedis.hset(Constant.Device_Is_OnLine, String.valueOf(devId), "1");
+            jedis.close();
             Calendar calendar=Calendar.getInstance();
-            appPush.sendMessage(devId,Constant.Push_OnLine,calendar.getTimeInMillis());
+            deviceStatuss.put(devId, new DeviceStatus(calendar.getTimeInMillis()));
+            appPush.sendMessage(devId,Constant.Push_OnLine,calendar.getTimeInMillis(),null);
             try {
                 Map<String, Object> params = new LinkedHashMap<>();
                 params.put("Dev_Login_Time",calendar.getTime() );

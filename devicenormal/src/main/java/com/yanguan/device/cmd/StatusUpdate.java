@@ -43,6 +43,6 @@ public class StatusUpdate implements IProcess {
             e.printStackTrace();
             logger.error("Device Status Update is Fail.the DeviceID:"+devId);
         }
-        appPush.sendMessage(devId, Constant.Push_Status, System.currentTimeMillis());
+        appPush.sendMessage(devId, Constant.Push_Status, System.currentTimeMillis(),null);
     }
 }

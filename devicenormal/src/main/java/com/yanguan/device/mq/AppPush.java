@@ -23,7 +23,7 @@ public class AppPush  {
         this.jmsQueueTemplate = jmsQueueTemplate;
     }
 
-    public void sendMessage(int devId, int msgType, long rmdTime) {
+    public void sendMessage(int devId, int msgType, long rmdTime,Object data) {
         jmsQueueTemplate.send(new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
@@ -31,6 +31,7 @@ public class AppPush  {
                 mapMessage.setInt("DeviceID",devId);
                 mapMessage.setInt("msgType",msgType);
                 mapMessage.setLong("rmdTime",rmdTime);
+                mapMessage.setObject("data", data);
                 return mapMessage;
             }
         });

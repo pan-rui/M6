@@ -95,7 +95,7 @@ public class NettyServer {
         bootstrap.group(bossGroup, workerGroup);
         bootstrap.channel(EpollServerSocketChannel.class);
 //        bootstrap.channel(NioServerSocketChannel.class);
-        ThreadPoolExecutor tpe=new ThreadPoolExecutor(coreSize,maxSize,keepAlive, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<>(maxSize));
+        ThreadPoolExecutor tpe=new ThreadPoolExecutor(coreSize,maxSize,keepAlive, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>(maxSize));
         tpe.allowCoreThreadTimeOut(true);
         eventExecutor = new DefaultEventExecutor(tpe);
         logger.info("Initialized the Schedu serivce.");

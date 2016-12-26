@@ -113,7 +113,7 @@ public class CmdWriteDB implements InitializingBean {
                     @Override
                     public void uncaughtException(Thread t, Throwable e) {
                         e.printStackTrace();
-                        logger.error("writeHbase Thread Exception." + e.getMessage());
+                        logger.error("Cmd save to MySQL Thread Exception." + e.getMessage());
                         getTimer().scheduleAtFixedRate(getTimerTask(), 5000, interval, TimeUnit.MILLISECONDS);
 //                            t.run();
                     }

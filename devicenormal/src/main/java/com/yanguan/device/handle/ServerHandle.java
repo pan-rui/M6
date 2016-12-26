@@ -3,6 +3,7 @@ package com.yanguan.device.handle;
 import com.yanguan.device.cmd.IProcess;
 import com.yanguan.device.model.ProtocolEnum;
 import com.yanguan.device.nio.IdleHandler;
+import com.yanguan.device.vo.DeviceStatus;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -27,9 +28,10 @@ import java.util.Map;
  */
 @Service
 @ChannelHandler.Sharable
-public class ServerHandle extends SimpleChannelInboundHandler<Map<String,Object>> implements ApplicationContextAware {
+public class ServerHandle extends SimpleChannelInboundHandler<Map<String, Object>> implements ApplicationContextAware {
     private ApplicationContext appContext;
     protected static Map<Integer, IProcess> serviceMap = new HashMap<>();
+
     @PostConstruct
     public void init() {
         serviceMap.put(7, (IProcess) appContext.getBean("Take_DevID"));
@@ -41,19 +43,21 @@ public class ServerHandle extends SimpleChannelInboundHandler<Map<String,Object>
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.appContext=applicationContext;
+        this.appContext = applicationContext;
     }
 
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Map<String,Object> map) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Map<String, Object> map) throws Exception {
         short iType = (short) map.get("iType");
-        map.forEach((k,v)-> System.out.println("k-->"+k+"\tv--->"+v));      //Test......
-        Object devId=map.get("devId");
-        if(iType!=16 && devId!=null){
-            IdleHandler.getDeviceStatuss().get(devId).setLastSendTime(System.currentTimeMillis());
+        map.forEach((k, v) -> System.out.println("k-->" + k + "\tv--->" + v));      //Test......
+        Object devId = map.get("devId");
+        if (iType != 16 && devId != null) {
+            DeviceStatus deviceStatus = IdleHandler.getDeviceStatuss().get(devId);
+            if (deviceStatus != null)
+                deviceStatus.setLastSendTime(System.currentTimeMillis());
         }
-        IProcess service= (IProcess) appContext.getBean(ProtocolEnum.valueOfType(iType).name());
-        service.process(channelHandlerContext.channel(),map);
+        IProcess service = (IProcess) appContext.getBean(ProtocolEnum.valueOfType(iType).name());
+        service.process(channelHandlerContext.channel(), map);
     }
 }

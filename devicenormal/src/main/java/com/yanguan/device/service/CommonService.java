@@ -35,4 +35,8 @@ public class CommonService {
         return updateResult;
     }
 
+    public boolean isNotify() {
+        return true;
+    }
+
 }
