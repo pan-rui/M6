@@ -66,7 +66,7 @@ public class GpsWriteDB implements InitializingBean {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Gps 定时任务启动.......");
+                System.out.println("Gps schedu Task start.......");
                 Connection[] connections = new Connection[size];
                 Statement[] statements = new Statement[size];
                 getConnections(connections, statements, null, size);
@@ -100,7 +100,7 @@ public class GpsWriteDB implements InitializingBean {
                     }
                 }
                 System.gc();
-                logger.debug("GPS批量写入MySQL成功........");
+                logger.debug("GPS write MySQL success........");
                 Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
                     @Override
                     public void uncaughtException(Thread t, Throwable e) {

@@ -16,7 +16,9 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -71,6 +73,10 @@ public class NettyServer {
     private ServerHandle serverHandle;
     @Autowired
     private IdleHandler idleHandler;
+    @Autowired
+    private M6Decoder m6Decoder;
+    @Autowired
+    private M6Encoder m6Encoder;
 
     public long getWriteIdle() {
         return writeIdle;
@@ -118,8 +124,8 @@ public class NettyServer {
                 pipeline.addLast(idleHandler);
                 pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(10240, 0, 2, 0, 2));
                 pipeline.addLast("frameEncoder", new LengthFieldPrepender(2,false));//生成的长度值不包含长度本身的长度
-                pipeline.addLast(new M6Decoder());
-                pipeline.addLast(new M6Encoder());
+                pipeline.addLast(m6Decoder);
+                pipeline.addLast(m6Encoder);
                 pipeline.addLast(eventExecutor,serverHandle);
             }
         });

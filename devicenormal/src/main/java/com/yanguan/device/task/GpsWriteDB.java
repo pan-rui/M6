@@ -45,7 +45,7 @@ public class GpsWriteDB implements InitializingBean {
     public static final LinkedList<Object[]> gpsList = new LinkedList<>();
 
     public synchronized static ScheduledExecutorService getTimer() {
-        return timer == null ? (timer = Executors.newSingleThreadScheduledExecutor()) : timer;
+        return timer == null ? (timer = Executors.newScheduledThreadPool(2)) : timer;
     }
 
     public static Runnable getTimerTask() {
@@ -66,7 +66,7 @@ public class GpsWriteDB implements InitializingBean {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Gps 定时任务启动.......");
+                System.out.println("Gps schedu task is runing.......");
                 Connection[] connections = new Connection[size];
                 Statement[] statements = new Statement[size];
                 getConnections(connections, statements, null, size);

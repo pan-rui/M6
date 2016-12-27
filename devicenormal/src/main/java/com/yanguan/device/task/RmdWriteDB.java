@@ -46,7 +46,7 @@ public class RmdWriteDB implements InitializingBean {
     public static final LinkedList<Object[]> rmdList = new LinkedList<>();
 
     public synchronized static ScheduledExecutorService getTimer() {
-        return timer == null ? (timer = Executors.newSingleThreadScheduledExecutor()) : timer;
+        return timer == null ? (timer = Executors.newScheduledThreadPool(2)) : timer;
     }
 
     public static Runnable getTimerTask() {
@@ -67,7 +67,7 @@ public class RmdWriteDB implements InitializingBean {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Cmd 定时任务启动.......");
+                System.out.println("Rmd schedu task is runing.......");
                 Connection[] connections = new Connection[size];
                 Statement[] statements = new Statement[size];
                 getConnections(connections, statements, null, size);

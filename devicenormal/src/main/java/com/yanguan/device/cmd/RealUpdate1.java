@@ -27,8 +27,8 @@ public class RealUpdate1 implements IProcess {
         Object time1 = data.get("time1");
         String key=Constant.Device_Real_Prefix+devId;
         Jedis jedis=Constant.jedisPool.getResource();
-        jedis.rpush(key, lon1.toString()+lat1+time1);
-        if (jedis.llen(key) >= 12) {
+        jedis.rpush(key, lon1.toString()+Constant.SPLIT_CHAR+lat1+Constant.SPLIT_CHAR+time1);
+        if (jedis.llen(key) >= 15) {
             jedis.del(key);
         }
         jedis.close();

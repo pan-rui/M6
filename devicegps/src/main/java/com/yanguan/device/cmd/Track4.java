@@ -3,10 +3,12 @@ package com.yanguan.device.cmd;
 import com.yanguan.device.model.Constant;
 import com.yanguan.device.task.GpsWriteDB;
 import io.netty.channel.Channel;
+import io.netty.channel.DefaultAddressedEnvelope;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
+import java.net.SocketAddress;
 import java.util.Map;
 
 /**
@@ -40,6 +42,6 @@ public class Track4 implements IProcess {
             GpsWriteDB.gpsList.add(new Object[]{devId,lon3,lat3,time3});
             GpsWriteDB.gpsList.add(new Object[]{devId,lon4,lat4,time4});
         }
-            channel.writeAndFlush(data.get("iType")+Constant.SPLIT_CHAR+devId+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success);
+        channel.writeAndFlush(new DefaultAddressedEnvelope<String,SocketAddress>(data.get("iType")+Constant.SPLIT_CHAR+devId+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success+Constant.SPLIT_CHAR+0,(SocketAddress)data.get("sender"),(SocketAddress)data.get("recipient")));
     }
 }

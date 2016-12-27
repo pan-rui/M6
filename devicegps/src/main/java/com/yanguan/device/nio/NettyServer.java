@@ -1,6 +1,7 @@
 package com.yanguan.device.nio;
 
 
+import com.yanguan.device.decoder.GpsDecoder;
 import com.yanguan.device.decoder.M6Decoder;
 import com.yanguan.device.encoder.M6Encoder;
 import com.yanguan.device.handle.ServerHandle;
@@ -20,6 +21,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
+import io.netty.handler.codec.DatagramPacketDecoder;
+import io.netty.handler.codec.DatagramPacketEncoder;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -61,7 +64,10 @@ public class NettyServer {
     private Bootstrap bootstrap;
     private EventLoopGroup workerGroup;
     private EventExecutor eventExecutor=null;
-
+    @Autowired
+    private GpsDecoder gpsDecoder;
+    @Autowired
+    private DatagramPacketEncoder dataEncoder;
     @Autowired
     private ServerHandle serverHandle;
 
@@ -93,10 +99,10 @@ public class NettyServer {
             @Override
             public void initChannel(DatagramChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
-                pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(10240, 0, 2, 0, 2));
-                pipeline.addLast("frameEncoder", new LengthFieldPrepender(2,false));//生成的长度值不包含长度本身的长度
-                pipeline.addLast(new M6Decoder());
-                pipeline.addLast(new M6Encoder());
+//                pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(10240, 0, 2, 0, 2));
+//                pipeline.addLast("frameEncoder", new LengthFieldPrepender(2,false));//生成的长度值不包含长度本身的长度
+                pipeline.addLast(gpsDecoder);
+                pipeline.addLast(dataEncoder);
                 pipeline.addLast(eventExecutor,serverHandle);
             }
         });

@@ -61,7 +61,10 @@ public class NettyServer {
 
     @Autowired
     private ScheduServerHandle scheduServerHandle;
-
+    @Autowired
+    private M6Decoder m6Decoder;
+    @Autowired
+    private M6Encoder m6Encoder;
     @PostConstruct
     public void initialize() {
         bossGroup = new EpollEventLoopGroup(bossThreads);
@@ -98,8 +101,8 @@ public class NettyServer {
                 ChannelPipeline pipeline = ch.pipeline();
                 pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(10240, 0, 2, 0, 2));
                 pipeline.addLast("frameEncoder", new LengthFieldPrepender(2,false));//生成的长度值不包含长度本身的长度
-                pipeline.addLast(new M6Decoder());
-                pipeline.addLast(new M6Encoder());
+                pipeline.addLast(m6Decoder);
+                pipeline.addLast(m6Encoder);
                 pipeline.addLast(eventExecutor,scheduServerHandle);
             }
         });

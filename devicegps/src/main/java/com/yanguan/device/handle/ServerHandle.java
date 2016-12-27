@@ -1,7 +1,6 @@
 package com.yanguan.device.handle;
 
 import com.yanguan.device.cmd.IProcess;
-import com.yanguan.device.model.ProtocolEnum;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

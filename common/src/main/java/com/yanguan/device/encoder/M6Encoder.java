@@ -3,8 +3,10 @@ package com.yanguan.device.encoder;
 import com.yanguan.device.model.ProtocolEnum;
 import com.yanguan.device.util.ByteConvertUtil;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import org.springframework.stereotype.Component;
 
 /**
  * @Description: ${Description}
@@ -13,6 +15,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * @UpdateAuthor: \$Author$
  * @UpdateDateTime: \$Date$
  */
+@Component
 public class M6Encoder extends MessageToByteEncoder<String> {
 
     @Override

@@ -3,9 +3,12 @@ package com.yanguan.device.decoder;
 import com.yanguan.device.model.ProtocolEnum;
 import com.yanguan.device.util.ByteConvertUtil;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import io.netty.handler.codec.MessageToMessageDecoder;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,6 +21,7 @@ import java.util.Map;
  * @UpdateAuthor: \$Author$
  * @UpdateDateTime: \$Date$
  */
+@Component
 public class M6Decoder extends ByteToMessageDecoder {
     private static Logger logger = Logger.getLogger(M6Decoder.class);
 

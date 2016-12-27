@@ -21,7 +21,12 @@
             </list>
         </property>
     </bean>
-
+<!--    <bean id="dataDecoder" class="io.netty.handler.codec.DatagramPacketDecoder">
+        <constructor-arg ref="gpsDecoder"/>
+    </bean>-->
+    <bean id="dataEncoder" class="io.netty.handler.codec.DatagramPacketEncoder">
+        <constructor-arg ref="gpsEncoder"/>
+    </bean>
     <import resource="spring-dao.xml"/>
     <import resource="cache-redis.xml"/>
 </beans>
