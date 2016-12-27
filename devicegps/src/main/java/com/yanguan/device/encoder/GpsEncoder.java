@@ -28,7 +28,6 @@ public class GpsEncoder extends MessageToMessageEncoder<String> {
     private M6Encoder m6Encoder;
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, String s, List<Object> list) throws Exception {
-        System.out.println(" encode is Gps Packet...");
         ByteBuf byteBuf= Unpooled.buffer();
         m6Encoder.encode(channelHandlerContext, s,byteBuf);
         ByteBuf sendBuf = Unpooled.copyShort(byteBuf.readableBytes()).writeBytes(byteBuf);

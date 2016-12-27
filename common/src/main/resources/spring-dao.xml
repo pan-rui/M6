@@ -15,6 +15,7 @@
        default-autowire="byName">
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:db.properties"/>
+        <!--<property name="location" value="file:${user.dir}/db.properties"/>-->
     </bean>
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
         <property name="driverClassName" value="${db.driver}"/>

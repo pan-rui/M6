@@ -23,7 +23,7 @@ public class GpsDecoder extends MessageToMessageDecoder<DatagramPacket>{
     @Override
     protected void decode(ChannelHandlerContext ctx, DatagramPacket msg, List<Object> out) throws Exception {
         ByteBuf byteBuf=msg.content();
-        System.out.println("messageCode is :"+byteBuf.readShort());
+        byteBuf.readShort();
         m6Decoder.decode(ctx,byteBuf,out);
         Map<String, Object> data = (Map<String, Object>) out.get(0);
         data.put("sender", msg.sender());

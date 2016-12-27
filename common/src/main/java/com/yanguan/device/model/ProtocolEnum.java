@@ -29,11 +29,11 @@ public enum ProtocolEnum {
     Alert_Filter(11, new String[]{"pName-2", "sVer-2", "devId-4", "alertType-1", "phone-8", "time-4","verify-2"}, new int[]{2,2,2,4,1,1,2}),
     Up_Speed(12, new String[]{"devId-4", "`speed-4","verify-2"}, new int[]{}),
     Up_Error(15, new String[]{"pName-2", "sVer-2", "devId-4", "errorCode-4","verify-2"}, new int[]{}),
-    Track1(41, new String[]{"devId-4","stateSize-1","`lon1-4","`lat1-4","time1-4","verify-2"}, new int[]{2,4,1,2}),
-    Track2(42, new String[]{"devId-4","stateSize-1","`lon1-4","`lat1-4","time1-4","`lon2-4","`lat2-4","time2-4","verify-2"}, new int[]{2,4,1,2}),
-    Track3(43, new String[]{"devId-4","stateSize-1","`lon1-4","`lat1-4","time1-4","`lon2-4","`lat2-4","time2-4","`lon3-4","`lat3-4","time3-4","verify-2"}, new int[]{2,4,1,2}),
-    Track4(44, new String[]{"devId-4","stateSize-1","`lon1-4","`lat1-4","time1-4","`lon2-4","`lat2-4","time2-4","`lon3-4","`lat3-4","time3-4","`lon4-4","`lat4-4","time4-4","verify-2"}, new int[]{2,4,1,2}),
-    Track5(45, new String[]{"devId-4","stateSize-1","`lon1-4","`lat1-4","time1-4","`lon2-4","`lat2-4","time2-4","`lon3-4","`lat3-4","time3-4","`lon4-4","`lat4-4","time4-4","`lon5-4","`lat5-4","time5-4","verify-2"}, new int[]{2,4,1,2}),
+    Track1(41, new String[]{"devId-4","stateSize1-1","`lon1-4","`lat1-4","time1-4","verify-2"}, new int[]{2,4,1,2}),
+    Track2(42, new String[]{"devId-4","stateSize1-1","`lon1-4","`lat1-4","time1-4","stateSize2-1","`lon2-4","`lat2-4","time2-4","verify-2"}, new int[]{2,4,1,2}),
+    Track3(43, new String[]{"devId-4","stateSize1-1","`lon1-4","`lat1-4","time1-4","stateSize2-1","`lon2-4","`lat2-4","time2-4","stateSize3-1","`lon3-4","`lat3-4","time3-4","verify-2"}, new int[]{2,4,1,2}),
+    Track4(44, new String[]{"devId-4","stateSize1-1","`lon1-4","`lat1-4","time1-4","stateSize2-1","`lon2-4","`lat2-4","time2-4","stateSize3-1","`lon3-4","`lat3-4","time3-4","stateSize4-1","`lon4-4","`lat4-4","time4-4","verify-2"}, new int[]{2,4,1,2}),
+    Track5(45, new String[]{"devId-4","stateSize1-1","`lon1-4","`lat1-4","time1-4","stateSize2-1","`lon2-4","`lat2-4","time2-4","stateSize3-1","`lon3-4","`lat3-4","time3-4","stateSize4-1","`lon4-4","`lat4-4","time4-4","stateSize5-1","`lon5-4","`lat5-4","time5-4","verify-2"}, new int[]{2,4,1,2}),
     HeartBeat(16, new String[]{"devId-4", "gsmSignal-1", "verify-2"}, new int[]{2,1, 2});
     private Map<String, Integer> receiveMap;
     private int[] sendDataLeng;

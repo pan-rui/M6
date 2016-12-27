@@ -139,7 +139,6 @@ public class GpsWriteDB implements InitializingBean {
         } catch (SQLException e) {
             e.printStackTrace();
             logger.error("getConnection throw Exception.....");
-
         }
     }
 }
