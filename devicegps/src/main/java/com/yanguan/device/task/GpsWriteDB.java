@@ -74,7 +74,7 @@ public class GpsWriteDB implements InitializingBean {
                 Calendar calendar = Calendar.getInstance();
                 String sqlPrefix = "INSERT ignore YG_GPS.gps"+format.format(calendar.getTime())+"(devId,time, gps_lng, gps_lat) VALUES (";
                 int count = 0;
-                while (!gpsList.isEmpty() && count <= 100000) {
+                while (!gpsList.isEmpty() && count <= 1000000) {
                     Object[] gps = null;
                     synchronized (gpsList) {
                         gps = gpsList.remove();

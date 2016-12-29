@@ -4,8 +4,8 @@
 
     <appender name="debug-out" class="org.apache.log4j.RollingFileAppender">
         <param name="File" value="logs/debug.log" />
-        <param name="MaxFileSize" value="1024KB"/>
-        <param name="MaxBackupIndex" value="200"/>
+        <param name="MaxFileSize" value="10240KB"/>
+        <param name="MaxBackupIndex" value="100"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy.MM.dd HH:mm:ss} %c - %m%n" />
         </layout>
@@ -17,8 +17,8 @@
 
     <appender name="info-out" class="org.apache.log4j.RollingFileAppender">
         <param name="File" value="logs/info.log" />
-        <param name="MaxFileSize" value="1024KB"/>
-        <param name="MaxBackupIndex" value="200"/>
+        <param name="MaxFileSize" value="10240KB"/>
+        <param name="MaxBackupIndex" value="100"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy.MM.dd HH:mm:ss} %c - %m%n" />
         </layout>
@@ -31,8 +31,8 @@
 
     <appender name="warn-out" class="org.apache.log4j.RollingFileAppender">
         <param name="File" value="logs/warn.log" />
-        <param name="MaxFileSize" value="1024KB"/>
-        <param name="MaxBackupIndex" value="200"/>
+        <param name="MaxFileSize" value="10240KB"/>
+        <param name="MaxBackupIndex" value="100"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy.MM.dd HH:mm:ss} %c - %m%n" />
         </layout>
@@ -45,8 +45,8 @@
 	
     <appender name="error-out" class="org.apache.log4j.RollingFileAppender">
         <param name="File" value="logs/error.log" />
-        <param name="MaxFileSize" value="1024KB"/>
-        <param name="MaxBackupIndex" value="200"/>
+        <param name="MaxFileSize" value="10240KB"/>
+        <param name="MaxBackupIndex" value="100"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy.MM.dd HH:mm:ss} %c - %m%n" />
         </layout>
