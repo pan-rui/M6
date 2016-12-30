@@ -76,7 +76,9 @@ public class GpsWriteDB implements InitializingBean {
                 int count = 0;
                 while (!gpsList.isEmpty() && count <= 1000000) {
                     Object[] gps = null;
+                    synchronized (gpsList) {
                         gps = gpsList.poll();
+                    }
                     count++;
                     int devId = (int) gps[0], index = devId % size;
                     StringBuffer sb = new StringBuffer(sqlPrefix);

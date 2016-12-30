@@ -2,6 +2,7 @@ package com.yanguan.device.cmd;
 
 import com.yanguan.device.dao.DeviceMapper;
 import com.yanguan.device.model.Constant;
+import com.yanguan.device.mq.AppPull;
 import com.yanguan.device.service.CommonService;
 import com.yanguan.device.task.CmdWriteDB;
 import io.netty.channel.Channel;
@@ -44,8 +45,9 @@ public class AppCmd9 implements IProcess {
                 logger.error("Elec_Defence is set Fail.the DeviceID:"+devId);
             }
         }
+        String cmdStr=resultCode+ AppCmd1.generateStatus(data);
         synchronized (CmdWriteDB.cmdList) {
-            CmdWriteDB.cmdList.add(resultCode + Constant.SPLIT_CHAR);
+            CmdWriteDB.cmdList.add(cmdStr);
         }
     }
 }

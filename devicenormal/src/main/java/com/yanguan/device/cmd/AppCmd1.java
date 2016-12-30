@@ -99,8 +99,9 @@ public class AppCmd1 implements IProcess {
                 logger.error("update Status Fail..the DeviceID:" + devId);
             }
         }
+        String cmdStr=resultCode+generateStatus(data);
         synchronized (CmdWriteDB.cmdList) {
-            CmdWriteDB.cmdList.add(resultCode + generateStatus(data));
+            CmdWriteDB.cmdList.add(cmdStr);
         }
     }
 

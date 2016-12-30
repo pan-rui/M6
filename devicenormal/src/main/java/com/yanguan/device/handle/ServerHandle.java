@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 @ChannelHandler.Sharable
 public class ServerHandle extends SimpleChannelInboundHandler<Map<String, Object>> implements ApplicationContextAware {
     private ApplicationContext appContext;
-    public ThreadPoolExecutor tpe;
+    private ThreadPoolExecutor tpe;
     @Value("#{config['nio.coreSize']?:10}")
     private int coreSize;
     @Value("#{config['nio.maxSize']?:4096}")

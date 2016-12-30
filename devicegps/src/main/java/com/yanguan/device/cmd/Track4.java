@@ -36,10 +36,16 @@ public class Track4 implements IProcess {
         Object lon4 = data.get("lon4");
         Object lat4 = data.get("lat4");
         Object time4 = data.get("time4");
-            GpsWriteDB.gpsList.add(new Object[]{devId,lon1,lat1,time1});
-            GpsWriteDB.gpsList.add(new Object[]{devId,lon2,lat2,time2});
-            GpsWriteDB.gpsList.add(new Object[]{devId,lon3,lat3,time3});
-            GpsWriteDB.gpsList.add(new Object[]{devId,lon4,lat4,time4});
+        Object[] gps1=new Object[]{devId, lon1, lat1, time1};
+        Object[] gps2=new Object[]{devId, lon2, lat2, time2};
+        Object[] gps3=new Object[]{devId, lon3, lat3, time3};
+        Object[] gps4=new Object[]{devId, lon4, lat4, time4};
+        synchronized (GpsWriteDB.gpsList) {
+            GpsWriteDB.gpsList.add(gps1);
+            GpsWriteDB.gpsList.add(gps2);
+            GpsWriteDB.gpsList.add(gps3);
+            GpsWriteDB.gpsList.add(gps4);
+        }
         channel.writeAndFlush(new DefaultAddressedEnvelope<String,SocketAddress>(data.get("iType")+Constant.SPLIT_CHAR+devId+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success+Constant.SPLIT_CHAR+0,(SocketAddress)data.get("sender"),(SocketAddress)data.get("recipient")));
     }
 }

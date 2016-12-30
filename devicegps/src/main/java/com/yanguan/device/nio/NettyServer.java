@@ -55,15 +55,8 @@ public class NettyServer {
     private int workThreads = 256;
     @Value("#{config['nio.work.io.ratio']}")
     private int workerEventLoopIORatio;
-    @Value("#{config['nio.coreSize']?:256}")
-    private int coreSize;
-    @Value("#{config['nio.maxSize']?:4096}")
-    private int maxSize;
-    @Value("#{config['nio.keepAlive']?:15000}")
-    private long keepAlive;
     private Bootstrap bootstrap;
     private EventLoopGroup workerGroup;
-    private EventExecutor eventExecutor=null;
     @Autowired
     private GpsDecoder gpsDecoder;
     @Autowired
@@ -75,9 +68,6 @@ public class NettyServer {
     public void initialize() {
          workerGroup = new NioEventLoopGroup(workThreads);
         ((NioEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
-//        bossGroup = new NioEventLoopGroup(bossThreads);
-//        workerGroup = new NioEventLoopGroup(workThreads);
-//        ((NioEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
         bootstrap = new Bootstrap();
         bootstrap.option(ChannelOption.SO_REUSEADDR, true)
                 .option(ChannelOption.SO_BACKLOG, 1024)
@@ -86,9 +76,6 @@ public class NettyServer {
                 .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
         bootstrap.group(workerGroup);
         bootstrap.channel(NioDatagramChannel.class);
-        ThreadPoolExecutor tpe=new ThreadPoolExecutor(coreSize,maxSize,keepAlive, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>(maxSize));
-        tpe.allowCoreThreadTimeOut(true);
-        eventExecutor = new DefaultEventExecutor(tpe);
         logger.info("Initialized the Schedu serivce.");
 
     }
@@ -103,7 +90,7 @@ public class NettyServer {
 //                pipeline.addLast("frameEncoder", new LengthFieldPrepender(2,false));//生成的长度值不包含长度本身的长度
                 pipeline.addLast(gpsDecoder);
                 pipeline.addLast(dataEncoder);
-                pipeline.addLast(eventExecutor,serverHandle);
+                pipeline.addLast(serverHandle);
             }
         });
 
