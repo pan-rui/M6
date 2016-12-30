@@ -33,11 +33,9 @@ public class Track3 implements IProcess {
         Object lon3 = data.get("lon3");
         Object lat3 = data.get("lat3");
         Object time3 = data.get("time3");
-        synchronized (GpsWriteDB.gpsList) {
             GpsWriteDB.gpsList.add(new Object[]{devId,lon1,lat1,time1});
             GpsWriteDB.gpsList.add(new Object[]{devId,lon2,lat2,time2});
             GpsWriteDB.gpsList.add(new Object[]{devId,lon3,lat3,time3});
-        }
         channel.writeAndFlush(new DefaultAddressedEnvelope<String,SocketAddress>(data.get("iType")+Constant.SPLIT_CHAR+devId+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success+Constant.SPLIT_CHAR+0,(SocketAddress)data.get("sender"),(SocketAddress)data.get("recipient")));
     }
 }

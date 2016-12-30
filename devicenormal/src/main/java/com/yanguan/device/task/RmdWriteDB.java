@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.TimerTask;
+import java.util.Vector;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +41,7 @@ public class RmdWriteDB implements InitializingBean {
     @Value("#{config['jdbc.url2']}")
     private String url2;
     private String[] urls = null;
-    private String mysqlDriver = "com.mysql.jdbc.Driver";
+    private String mysqlDriver = "com.mysql.cj.jdbc.Driver";
     private SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
     public static final LinkedList<Object[]> rmdList = new LinkedList<>();

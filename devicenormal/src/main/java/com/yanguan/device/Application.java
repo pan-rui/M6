@@ -59,7 +59,6 @@ public class Application {
         NettyServer server = appContext.getBean(NettyServer.class);
         getSchedu().scheduleAtFixedRate(new Runnable() {
             private Runnable runnable;
-
             {
                 runnable = this;
             }

@@ -33,8 +33,9 @@ public class Alert_Filter implements IProcess {
             jedis.rpush(Constant.M6_Alert_List, String.valueOf(data.get("phone")));
             jedis.close();
         }
+        Object[] objArry=new Object[]{devId,data.get("alertType"),0,0,System.currentTimeMillis()/1000};
         synchronized (RmdWriteDB.rmdList) {
-            RmdWriteDB.rmdList.add(new Object[]{devId,data.get("alertType"),0,0,System.currentTimeMillis()/1000});
+            RmdWriteDB.rmdList.add(objArry);
         }
         channel.writeAndFlush(data.get("iType")+Constant.SPLIT_CHAR+data.get("pName")+Constant.SPLIT_CHAR+data.get("sVer")+Constant.SPLIT_CHAR+devId+Constant.SPLIT_CHAR+data.get("alertType")+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success+Constant.SPLIT_CHAR+0);
     }

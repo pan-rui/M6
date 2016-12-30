@@ -40,7 +40,7 @@ public class CmdWriteDB implements InitializingBean {
     @Value("#{config['jdbc.url2']}")
     private String url2;
     private String[] urls = null;
-    private String mysqlDriver = "com.mysql.jdbc.Driver";
+    private String mysqlDriver = "com.mysql.cj.jdbc.Driver";
     private SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

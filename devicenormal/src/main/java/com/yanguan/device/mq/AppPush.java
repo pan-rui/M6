@@ -35,7 +35,7 @@ public class AppPush  {
                 return mapMessage;
             }
         });
-        logger.info("push MQ is success on the DeviceID:"+devId);
+//        logger.info("push MQ is success on the DeviceID:"+devId);     //Test....
     }
 
 }

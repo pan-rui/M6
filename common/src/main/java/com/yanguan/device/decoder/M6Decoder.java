@@ -28,7 +28,7 @@ public class M6Decoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
         int length = byteBuf.readableBytes();
-        logger.info("byteBuf长度\t" + length);
+//        logger.info("byteBuf长度\t" + length);      //Test.....
 /*        for (int i = 0; i < length; i++) {
             byte by = byteBuf.readByte();
             System.out.println("================" + i + "===============");

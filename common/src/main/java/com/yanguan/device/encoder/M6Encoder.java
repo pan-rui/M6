@@ -30,7 +30,7 @@ public class M6Encoder extends MessageToByteEncoder<String> {
                 strArry = new String[]{str};                //float 类型
             } else strArry= str.split("\\.");
             for (String ss : strArry) {
-                System.out.println("-------"+ss);
+//                System.out.println("-------"+ss);     //Test.....
                 int length=protocol.getSendDataLeng()[index];
                 if(length>200){   //char类型
                     byteBuf.writeBytes(ByteConvertUtil.charArryToByteArry(ss));

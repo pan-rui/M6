@@ -31,6 +31,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -51,14 +52,9 @@ public class NettyServer {
     private int workThreads = 256;
     @Value("#{config['nio.work.io.ratio']}")
     private int workerEventLoopIORatio;
-    @Value("#{config['nio.coreSize']?:10}")
-    private int coreSize;
-    @Value("#{config['nio.maxSize']?:4096}")
-    private int maxSize;
-    @Value("#{config['nio.keepAlive']?:30000}")
-    private long keepAlive;
+
     @Value("#{config['nio.writeIdle']?:0}")
-    private long writeIdle = 120;
+    private long writeIdle = 0;
     @Value("#{config['nio.readIdle']?:60}")
     private long readIdle = 60;
     @Value("#{config['nio.allIdle']?:0}")
@@ -67,16 +63,10 @@ public class NettyServer {
     private ServerBootstrap bootstrap;
     private EventLoopGroup workerGroup;
     private EventLoopGroup bossGroup;
-    private EventExecutor eventExecutor=null;
-
     @Autowired
     private ServerHandle serverHandle;
     @Autowired
     private IdleHandler idleHandler;
-    @Autowired
-    private M6Decoder m6Decoder;
-    @Autowired
-    private M6Encoder m6Encoder;
 
     public long getWriteIdle() {
         return writeIdle;
@@ -107,9 +97,7 @@ public class NettyServer {
         bootstrap.group(bossGroup, workerGroup);
         bootstrap.channel(EpollServerSocketChannel.class);
 //        bootstrap.channel(NioServerSocketChannel.class);
-        ThreadPoolExecutor tpe=new ThreadPoolExecutor(coreSize,maxSize,keepAlive, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>(maxSize));
-        tpe.allowCoreThreadTimeOut(true);
-        eventExecutor = new DefaultEventExecutor(tpe);
+
         logger.info("Initialized the Schedu serivce.");
 
     }
@@ -124,9 +112,10 @@ public class NettyServer {
                 pipeline.addLast(idleHandler);
                 pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(10240, 0, 2, 0, 2));
                 pipeline.addLast("frameEncoder", new LengthFieldPrepender(2,false));//生成的长度值不包含长度本身的长度
-                pipeline.addLast(m6Decoder);
-                pipeline.addLast(m6Encoder);
-                pipeline.addLast(eventExecutor,serverHandle);
+                pipeline.addLast(new M6Decoder());
+                pipeline.addLast(new M6Encoder());
+//                pipeline.addLast(eventExecutor,serverHandle);
+                pipeline.addLast(serverHandle);
             }
         });
 

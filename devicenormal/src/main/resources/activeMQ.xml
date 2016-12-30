@@ -7,41 +7,45 @@
                         http://activemq.apache.org/schema/core
                         http://activemq.apache.org/schema/core/activemq-core.xsd http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
 
-    <amq:connectionFactory id="jmsConnectionFactory" brokerURL="tcp://#{config['mq.broke.host']}:#{config['mq.broke.port']}" />
+    <amq:connectionFactory id="jmsConnectionFactory"
+                           brokerURL="tcp://#{config['mq.broke.host']}:#{config['mq.broke.port']}?tcpNoDelay=true"
+                           alwaysSessionAsync="true" dispatchAsync="true" useAsyncSend="true" sendAcksAsync="true"
+                           maxThreadPoolSize="512"/>
     <!--<amq:connectionFactory id="jmsConnectionFactory" brokerURL="tcp://${mq.broke.host}:${mq.broke.port}" userName="${m6.username}" password="${m6.password}" />-->
     <bean id="jmsConnectionFactoryExtend" class="org.springframework.jms.connection.CachingConnectionFactory">
-        <constructor-arg ref="jmsConnectionFactory" />
-        <property name="sessionCacheSize" value="100" />
+        <constructor-arg ref="jmsConnectionFactory"/>
+        <property name="sessionCacheSize" value="100"/>
     </bean>
 
     <!-- 消息处理器 -->
-    <bean id="jmsMessageConverter" class="org.springframework.jms.support.converter.SimpleMessageConverter" />
+    <bean id="jmsMessageConverter" class="org.springframework.jms.support.converter.SimpleMessageConverter"/>
     <!-- ====Producer side start==== -->
     <!-- 定义JmsTemplate的Queue类型 -->
     <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
-        <constructor-arg ref="jmsConnectionFactoryExtend" />
+        <constructor-arg ref="jmsConnectionFactoryExtend"/>
         <!-- 非pub/sub模型（发布/订阅），即队列模式 -->
-        <property name="pubSubDomain" value="false" />
+        <property name="pubSubDomain" value="false"/>
         <property name="messageConverter" ref="jmsMessageConverter"></property>
         <property name="defaultDestination">
             <bean id="M6AppPush" class="org.apache.activemq.command.ActiveMQQueue">
-                <constructor-arg value="#{config['m6.app.push']}" /></bean>
+                <constructor-arg value="#{config['m6.app.push']}?consumer.prefetchSize=20"/>
+            </bean>
         </property>
     </bean>
 
     <!-- Spring JMS producer -->
-        <bean id="appPush" class="com.yanguan.device.mq.AppPush">
-            <property name="jmsQueueTemplate" ref="jmsQueueTemplate"/>
-        </bean>
+    <bean id="appPush" class="com.yanguan.device.mq.AppPush">
+        <property name="jmsQueueTemplate" ref="jmsQueueTemplate"/>
+    </bean>
 
 
-        <bean id="appPull" class="com.yanguan.device.mq.AppPull" init-method="init">
-            <property name="coreSize" value="#{config['mq.coreSize']}"/>
-            <property name="maxSize" value="#{config['mq.maxSize']}"/>
-            <property name="keepAlive" value="#{config['mq.keepAlive']}"/>
-            <property name="expire" value="#{config['cmd.expire']}"/>
-            <property name="appPush" ref="appPush"/>
-        </bean>
+    <bean id="appPull" class="com.yanguan.device.mq.AppPull" init-method="init">
+        <property name="coreSize" value="#{config['mq.coreSize']}"/>
+        <property name="maxSize" value="#{config['mq.maxSize']}"/>
+        <property name="keepAlive" value="#{config['mq.keepAlive']}"/>
+        <property name="expire" value="#{config['cmd.expire']}"/>
+        <property name="appPush" ref="appPush"/>
+    </bean>
 
     <jms:listener-container container-type="default"
                             connection-factory="jmsConnectionFactoryExtend"

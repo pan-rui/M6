@@ -39,7 +39,7 @@ public class GpsWriteDB implements InitializingBean {
     @Value("#{config['jdbc.url2']}")
     private String url2;
     private String[] urls = null;
-    private String mysqlDriver = "com.mysql.jdbc.Driver";
+    private String mysqlDriver = "com.mysql.cj.jdbc.Driver";
     private SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
     public static final LinkedList<Object[]> gpsList = new LinkedList<>();
@@ -76,9 +76,7 @@ public class GpsWriteDB implements InitializingBean {
                 int count = 0;
                 while (!gpsList.isEmpty() && count <= 1000000) {
                     Object[] gps = null;
-                    synchronized (gpsList) {
-                        gps = gpsList.remove();
-                    }
+                        gps = gpsList.poll();
                     count++;
                     int devId = (int) gps[0], index = devId % size;
                     StringBuffer sb = new StringBuffer(sqlPrefix);

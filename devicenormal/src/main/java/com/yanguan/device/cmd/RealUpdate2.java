@@ -35,9 +35,11 @@ public class RealUpdate2 implements IProcess {
             jedis.del(key);
         }
         jedis.close();
+        Object[] objArry1=new Object[]{devId,lon1,lat1,time1};
+        Object[] objArry2=new Object[]{devId,lon2,lat2,time2};
         synchronized (GpsWriteDB.gpsList) {
-            GpsWriteDB.gpsList.add(new Object[]{devId,lon1,lat1,time1});
-            GpsWriteDB.gpsList.add(new Object[]{devId,lon2,lat2,time2});
+            GpsWriteDB.gpsList.add(objArry1);
+            GpsWriteDB.gpsList.add(objArry2);
         }
 //            channel.writeAndFlush(data.get("iType")+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success);
     }

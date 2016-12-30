@@ -28,8 +28,9 @@ public class Alert implements IProcess {
         int devId= (int)data.get("devId");
         Calendar calendar=Calendar.getInstance();
         appPush.sendMessage(devId, (int) data.get("alertType"), calendar.getTimeInMillis(), null);
+        Object[] objArry=new Object[]{devId, data.get("alertType"), data.get("lon"), data.get("lat"), data.get("time")};
         synchronized (RmdWriteDB.rmdList) {
-            RmdWriteDB.rmdList.add(new Object[]{devId,data.get("alertType"),data.get("lon"),data.get("lat"),data.get("time")});
+            RmdWriteDB.rmdList.add(objArry);
         }
         channel.writeAndFlush(data.get("iType")+Constant.SPLIT_CHAR+data.get("pName")+Constant.SPLIT_CHAR+data.get("sVer")+Constant.SPLIT_CHAR+devId+Constant.SPLIT_CHAR+data.get("alertType")+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success+Constant.SPLIT_CHAR+0);
     }

@@ -12,8 +12,8 @@
     <!--<context:component-scan base-package="com.yanguan.device.util,com.yanguan.device.dao,com.yanguan.device.service,com.yanguan.device.cmd,com.yanguan.device.handle,com.yanguan.device.nio"/>-->
     <context:component-scan base-package="com.yanguan.device"/>
     <context:annotation-config />
-    <util:properties id="config" location="classpath:config/server.properties"/>
-    <!--<util:properties id="config" location="file:${user.dir}/server.properties"/>-->
+    <!--<util:properties id="config" location="classpath:config/server.properties"/>-->
+    <util:properties id="config" location="file:${user.dir}/server.properties"/>
     <bean id="messageSource"
           class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
