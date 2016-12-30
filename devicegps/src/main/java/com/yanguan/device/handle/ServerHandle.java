@@ -1,6 +1,7 @@
 package com.yanguan.device.handle;
 
 import com.yanguan.device.cmd.IProcess;
+import com.yanguan.device.nio.NettyServer;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -45,13 +46,13 @@ public class ServerHandle extends SimpleChannelInboundHandler<Map<String, Object
         serviceMap.put(44, (IProcess) appContext.getBean("Track4"));
         serviceMap.put(45, (IProcess) appContext.getBean("Track5"));
         tpe=new ThreadPoolExecutor(coreSize,maxSize,keepAlive, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>(maxSize));
-        tpe.allowCoreThreadTimeOut(true);}
+        tpe.allowCoreThreadTimeOut(true);
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.appContext = applicationContext;
     }
-
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Map<String, Object> map) throws Exception {
