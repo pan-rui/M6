@@ -77,7 +77,7 @@ public class GpsWriteDB implements InitializingBean {
                 while (!gpsList.isEmpty() && count <= 1000000) {
                     Object[] gps = null;
                     synchronized (gpsList) {
-                        gps = gpsList.poll();
+                        gps = gpsList.remove();
                     }
                     count++;
                     int devId = (int) gps[0], index = devId % size;

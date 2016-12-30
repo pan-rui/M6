@@ -69,9 +69,8 @@ public class NettyServer {
          workerGroup = new NioEventLoopGroup(workThreads);
         ((NioEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
         bootstrap = new Bootstrap();
-        bootstrap.option(ChannelOption.SO_REUSEADDR, true)
+        bootstrap.option(ChannelOption.SO_BROADCAST,true)
                 .option(ChannelOption.SO_BACKLOG, 1024)
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
                 .option(ChannelOption.RCVBUF_ALLOCATOR, new AdaptiveRecvByteBufAllocator(64, 1400, 65536))
                 .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
         bootstrap.group(workerGroup);

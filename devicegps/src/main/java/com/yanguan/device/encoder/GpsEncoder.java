@@ -31,6 +31,6 @@ public class GpsEncoder extends MessageToMessageEncoder<String> {
         ByteBuf byteBuf= Unpooled.buffer();
         m6Encoder.encode(channelHandlerContext, s,byteBuf);
         ByteBuf sendBuf = Unpooled.copyShort(byteBuf.readableBytes()).writeBytes(byteBuf);
-        list.add(sendBuf);
+        list.add(sendBuf.retain());
     }
 }
