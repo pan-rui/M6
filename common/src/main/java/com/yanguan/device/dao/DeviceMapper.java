@@ -8,12 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
-
-/**
- * @author [*田园间*]   liaoxuqian@hotmail.com
- * @datetime 2015-8-21  10:51:17
- * @since version 1.0
- */
 @Repository
 public interface DeviceMapper {
     @Cacheable(value = "schedu", keyGenerator = "myKeyGenerator")

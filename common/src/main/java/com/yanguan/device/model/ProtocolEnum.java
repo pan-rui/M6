@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public enum ProtocolEnum {
     SCHEDU(0,new String[]{"backup-1","company-2","imei-8","base1-2","base2-2","base3-2","base4-2","verify-2"},new int[]{2,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,2}),
-    SCHEDU_SINGLE(1,new String[]{"backup-1","company-2","imei-8","base1-2","base2-2","base3-2","base4-2","sType-1","verify-2"},new int[]{2,2,1,1,1,1,2,1,2}),
+    SCHEDU_SINGLE(1,new String[]{"backup-1","company-2","imei-8","base1-4","base2-4","base3-4","base4-4","sType-1","verify-2"},new int[]{2,2,1,1,1,1,2,1,2}),
     UP_DevAct(2,new String[]{"imei-8","~softVer...-5","~softVer..-3","~softVer.-2","softVer-1","~iccid-20","verify-2"},new int[]{2,8,205,203,202,1,220,1,2}),
     Take_DevID(7,new String[]{"pName-2","sVer-2","imei-8","~softVer...-5","~softVer..-3","~softVer.-2","softVer-1","~iccid-20","verify-2"},new int[]{2,2,2,4,2}),
     Active_Card(9, new String[]{"pName-2", "sVer-2", "devId-4", "~iccid-20", "verify-2"}, new int[]{2, 2, 2, 4, 1, 2}),

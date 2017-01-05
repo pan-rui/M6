@@ -8,7 +8,7 @@
                         http://activemq.apache.org/schema/core/activemq-core.xsd http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
 
     <amq:connectionFactory id="jmsConnectionFactory"
-                           brokerURL="tcp://#{config['mq.broke.host']}:#{config['mq.broke.port']}?tcpNoDelay=true"
+                           brokerURL="nio://#{config['mq.broke.host']}:#{config['mq.broke.port']}?trace=true"
                            alwaysSessionAsync="true" dispatchAsync="true" useAsyncSend="true" sendAcksAsync="true"
                            maxThreadPoolSize="512"/>
     <!--<amq:connectionFactory id="jmsConnectionFactory" brokerURL="tcp://${mq.broke.host}:${mq.broke.port}" userName="${m6.username}" password="${m6.password}" />-->

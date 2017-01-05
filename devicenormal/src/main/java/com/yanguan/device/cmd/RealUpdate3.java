@@ -1,9 +1,11 @@
 package com.yanguan.device.cmd;
 
 import com.yanguan.device.model.Constant;
+import com.yanguan.device.mq.AppPush;
 import com.yanguan.device.task.GpsWriteDB;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
@@ -19,6 +21,8 @@ import java.util.Map;
 @Component("Real_Update3")
 public class RealUpdate3 implements IProcess {
     private static final Logger logger = Logger.getLogger(RealUpdate3.class);
+    @Autowired
+    private AppPush appPush;
     @Override
     public void process(Channel channel, Map<String, Object> data) {
         int devId= (int)data.get("devId");
@@ -31,13 +35,14 @@ public class RealUpdate3 implements IProcess {
         Object lon3 = data.get("lon3");
         Object lat3 = data.get("lat3");
         Object time3 = data.get("time3");
-        String key=Constant.Device_Real_Prefix+devId;
+/*        String key=Constant.Device_Real_Prefix+devId;
         Jedis jedis=Constant.jedisPool.getResource();
         jedis.rpush(key, lon1.toString()+Constant.SPLIT_CHAR+lat1+Constant.SPLIT_CHAR+time1,lon2.toString()+Constant.SPLIT_CHAR+lat2+Constant.SPLIT_CHAR+time2,lon3.toString()+Constant.SPLIT_CHAR+lat3+Constant.SPLIT_CHAR+time3);
         if (jedis.llen(key) >= 12) {
             jedis.del(key);
         }
-        jedis.close();
+        jedis.close();*/
+        appPush.sendMessage(devId,Constant.Push_Device_Real_Track,(long)time1,lon1.toString()+Constant.SPLIT_CHAR+lat1+Constant.SPLIT_CHAR+time1+Constant.JOIN_CHAR+lon2.toString()+Constant.SPLIT_CHAR+lat2+Constant.SPLIT_CHAR+time2+Constant.JOIN_CHAR+lon3.toString()+Constant.SPLIT_CHAR+lat3+Constant.SPLIT_CHAR+time3);
         Object[] objArry1=new Object[]{devId,lon1,lat1,time1};
         Object[] objArry2=new Object[]{devId,lon2,lat2,time2};
         Object[] objArry3=new Object[]{devId,lon3,lat3,time3};

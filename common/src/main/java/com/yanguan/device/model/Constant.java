@@ -18,6 +18,7 @@ public class Constant {
 
     //常量字符串
     public static final String SPLIT_CHAR = ",";
+    public static final String JOIN_CHAR = "&";
 
     //数据库表名
     public static final String DEVICE_TABLE_REF = "YG_DEVICE_REF";
@@ -41,5 +42,6 @@ public class Constant {
     public static final int Push_Cmd_Success=0;     //命令执行成功
     public static final int Push_Cmd_Fail=99;     //命令执行失败
     public static final int Push_Device_Speed=6;     //设备时速
+    public static final int Push_Device_Real_Track=7;     //设备实时跟踪轨迹
 
 }
