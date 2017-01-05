@@ -106,7 +106,7 @@ public class AppPull implements MessageListener{
 //                    int cmdType = dataArr[3].matches("^\\d+$")?Integer.parseInt(dataArr[3]):0;
                     if (iType == 29) {
                             Jedis jedis= Constant.jedisPool.getResource();
-                            jedis.hset(Constant.Device_Cmd_Cache, dataArr[4], dataStr);
+                            jedis.hset(Constant.Device_Cmd_Cache, dataArr[3], dataStr);
                             jedis.close();
                     }
                     IdleHandler.getConnectionMap().remove(devId);
@@ -126,18 +126,6 @@ public class AppPull implements MessageListener{
                 break;
         }
     }*/
-    public void process0(String[] dataArry) {
-
-    }
-
 //消息码,项目名,软件版本,指令类型,设备码,参数....校验码
-    public void process1(String[] dataArry) {
-        int cmdType = Integer.parseInt(dataArry[3]);
-        int devId = Integer.parseInt(dataArry[4]);
-        int value = Integer.parseInt(dataArry[5]);
-        switch (cmdType) {
-            case 1:
 
-        }
-    }
 }

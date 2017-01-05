@@ -39,7 +39,7 @@ public class RealUpdate2 implements IProcess {
             jedis.del(key);
         }
         jedis.close();*/
-        appPush.sendMessage(devId,Constant.Push_Device_Real_Track,(long)time1,lon1.toString()+Constant.SPLIT_CHAR+lat1+Constant.SPLIT_CHAR+time1+Constant.JOIN_CHAR+lon2.toString()+Constant.SPLIT_CHAR+lat2+Constant.SPLIT_CHAR+time2);
+        appPush.sendMessage(devId,Constant.Push_Device_Real_Track,(long)time1*1000l,lon1.toString()+Constant.SPLIT_CHAR+lat1+Constant.SPLIT_CHAR+time1+Constant.JOIN_CHAR+lon2.toString()+Constant.SPLIT_CHAR+lat2+Constant.SPLIT_CHAR+time2);
         Object[] objArry1=new Object[]{devId,lon1,lat1,time1};
         Object[] objArry2=new Object[]{devId,lon2,lat2,time2};
         synchronized (GpsWriteDB.gpsList) {

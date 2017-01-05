@@ -9,10 +9,10 @@
     <select id="queryAllProvince" statementType="PREPARED" resultType="map">
       SELECT PROVINCE_NAME,PROVINCE_CODE,LNG,LAT FROM yanguan.YG_CITY_LNG_LAT GROUP BY PROVINCE_CODE HAVING PROVINCE_NAME NOT LIKE '%市';
     </select>
-    <select id="queryDeviceCity" statementType="PREPARED">
+    <select id="queryDeviceCity" statementType="PREPARED" resultType="map">
         SELECT CITY cName FROM yanguan.YG_CALLID WHERE MCC=#{mcc} AND MNC=#{mnc} AND LAC=#{lac} AND CELL=#{cell} LIMIT 1
     </select>
-    <select id="queryDeviceProvince" statementType="PREPARED">
+    <select id="queryDeviceProvince" statementType="PREPARED" resultType="map">
         SELECT REGION cName FROM yanguan.YG_CALLID WHERE MCC=#{mcc} AND MNC=#{mnc} AND LAC=#{lac} LIMIT 1
     </select>
 </mapper>

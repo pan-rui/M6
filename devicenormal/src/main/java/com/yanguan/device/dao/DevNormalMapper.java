@@ -18,5 +18,5 @@ public interface DevNormalMapper {
 //    @CacheEvict(value = "m6", keyGenerator = "myKeyGenerator")
     int cardActive(@Param("iccid") String iccid);
 
-    int insertOrUpdateMileage(@Param("mileage") double milrage, @Param("devId") double devId);
+    int insertOrUpdateMileage(@Param("mileage") double mileage, @Param("devId") double devId);
 }

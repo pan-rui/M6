@@ -89,7 +89,7 @@ public class CmdWriteDB implements InitializingBean {
                     String[] dest = new String[dataArr.length - 6];
                     System.arraycopy(dataArr, 5, dest, 0, dataArr.length - 6);
                     StringBuffer sb = new StringBuffer(sqlPrefix);
-                    sb.append(devId).append(",").append(msgCode).append(",'").append(StringUtils.arrayToCommaDelimitedString(dest)).append("',").append(dateTime.format(calendar.getTime())).append(",").append(resultCode).append(")");
+                    sb.append(devId).append(",").append(msgCode).append(",'").append(StringUtils.arrayToCommaDelimitedString(dest)).append("','").append(dateTime.format(calendar.getTime())).append("',").append(resultCode).append(")");
 //                    String sql = sb.toString();
                     try {
                         statements[index].addBatch(sb.toString());

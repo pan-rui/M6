@@ -6,6 +6,7 @@ import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
 
 import java.util.Map;
@@ -32,5 +33,16 @@ public class HeartBeat implements IProcess {
         jedis.close();
         idleHandler.putDevice(devId, channel);
         channel.writeAndFlush(data.get("iType")+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success);
+        Jedis jedis2= Constant.jedisPool.getResource();
+        String cmdStr=jedis2.hget(Constant.Device_Cmd_Cache, String.valueOf(devId));
+        jedis2.close();
+        if(!StringUtils.isEmpty(cmdStr)) {
+            try {
+                Thread.sleep(5000l);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            channel.writeAndFlush(cmdStr);
+        }
     }
 }

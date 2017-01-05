@@ -49,12 +49,14 @@ public class ServerHandle extends SimpleChannelInboundHandler<ByteBuf> {
         String cName= (String) city.get("cName");
         logger.info("query cityName is :"+cName);
         byte[] data=Client.cityMap.get(cName);
+        if(data==null && !Client.cityMap.isEmpty()) data = (byte[]) Client.cityMap.values().toArray()[0];
+        else return;
         ByteBuf byteBuf1= Unpooled.buffer();
         byteBuf1.writeShort(2 + 2 + data.length + 2);
         byteBuf1.writeShort(iType);
         byteBuf1.writeBytes(data);
         byteBuf1.writeShort(verifyCode);
-        ChannelFuture future = channelHandlerContext.writeAndFlush(byteBuf.array());
+        ChannelFuture future = channelHandlerContext.writeAndFlush(byteBuf1.array());
         future.channel().flush();
         future.addListener(new GenericFutureListener<Future<? super Void>>() {
             @Override

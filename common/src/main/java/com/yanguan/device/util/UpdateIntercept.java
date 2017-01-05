@@ -21,11 +21,12 @@ import java.util.Properties;
  * @UpdateAuthor: \$Author$
  * @UpdateDateTime: \$Date$
  */
-@Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class,Integer.class})})
+@Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
 public class UpdateIntercept implements Interceptor {
 
     private String dialect;
     private String sqlId;
+
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         RoutingStatementHandler handler = (RoutingStatementHandler) invocation.getTarget();
@@ -34,14 +35,15 @@ public class UpdateIntercept implements Interceptor {
         BoundSql boundSql = delegate.getBoundSql();
         String sId = mappedStatement.getId();
         if (sId.substring(sId.lastIndexOf(".") + 1).matches(sqlId)) {
-            String sql=boundSql.getSql();
+            String sql = boundSql.getSql();
             int suffix = sql.lastIndexOf(",");
-            ReflectUtil.setFieldValue(boundSql, "sql", sql.substring(0,suffix)+" where "+sql.substring(suffix+1));
+            System.out.println(sql);
+            if (suffix > 0)
+                ReflectUtil.setFieldValue(boundSql, "sql", sql.substring(0, suffix) + " where " + sql.substring(suffix + 1));
 //            ReflectUtil.setFieldValue(boundSql, "sql", sql.substring(0,prefix+4)+sql.substring(suffix+1)+" where "+sql.substring(prefix+4,suffix));
 //            BoundSql updateBoundSql = new BoundSql(mappedStatement.getConfiguration(), sql.substring(0,prefix+4)+sql.substring(suffix+1)+" where "+sql.substring(prefix+4,suffix), boundSql.getParameterMappings(), ((Map)boundSql.getParameterObject()).get("params"));
 //            ParameterHandler parameterHandler = new DefaultParameterHandler(mappedStatement, boundSql.getParameterObject(), updateBoundSql);
         }
-        System.out.println(boundSql.getSql());
         return invocation.proceed();
     }
 

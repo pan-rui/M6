@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class Client implements InitializingBean {
-    private Logger logger = Logger.getLogger(Client.class);
+    private static final Logger logger = Logger.getLogger(Client.class);
     private static ScheduledExecutorService timer;
     private static Runnable timerTask;
     public volatile static ConcurrentHashMap<String, byte[]> cityMap = new ConcurrentHashMap();
@@ -85,8 +85,7 @@ public class Client implements InitializingBean {
                         OutputStream out = client.getOutputStream();
                         InputStream in = client.getInputStream();
                         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                        long sendTime = System.currentTimeMillis();
-                        out.write(getConf((String)city.get("LNG"),(String)city.get("LAT"),String.valueOf(cityR)).getBytes());
+                        out.write(getConf(city.get("LNG"),city.get("LAT"),String.valueOf(cityR)).getBytes());
                         byte[] buf = new byte[4096];
                         int len = 0, offset = 0;
                         while ((len = in.read(buf)) > 0)
