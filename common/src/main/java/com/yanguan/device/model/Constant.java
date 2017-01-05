@@ -43,5 +43,6 @@ public class Constant {
     public static final int Push_Cmd_Fail=99;     //命令执行失败
     public static final int Push_Device_Speed=6;     //设备时速
     public static final int Push_Device_Real_Track=7;     //设备实时跟踪轨迹
+    public static final int Push_Device_Mileage=8;     //设备当日里程
 
 }

@@ -14,4 +14,22 @@
     <update id="cardActive" parameterType="string" statementType="PREPARED">
         UPDATE yanguan.YG_IoT_Card SET Active_Time=IFNULL(Active_Time,CURRENT_TIMESTAMP) WHERE Iccid=#{iccid}
     </update>
+    <!--insertOrUpdateMilrage-->
+    <insert id="" statementType="PREPARED">
+         INSERT INTO
+        yanguan.YG_DAY_MILRAGE
+            (
+                Device_ID,
+                Milage_Value,
+                Create_Time
+            )
+        VALUES
+            (
+                #{devId},
+                #{mileage},
+                CURRENT_DATE
+            )
+        ON DUPLICATE KEY UPDATE
+            Milage_Value = #{mileage}
+    </insert>
 </mapper>
