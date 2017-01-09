@@ -7,7 +7,7 @@
         SELECT CITY_CODE,CITY_NAME,LNG,LAT FROM yanguan.YG_CITY_LNG_LAT
     </select>
     <select id="queryAllProvince" statementType="PREPARED" resultType="map">
-      SELECT PROVINCE_NAME,PROVINCE_CODE,LNG,LAT FROM yanguan.YG_CITY_LNG_LAT GROUP BY PROVINCE_CODE HAVING PROVINCE_NAME NOT LIKE '%市';
+      SELECT PROVINCE_NAME,CITY_NAME,PROVINCE_CODE,LNG,LAT FROM yanguan.YG_CITY_LNG_LAT GROUP BY PROVINCE_CODE HAVING PROVINCE_NAME NOT LIKE '%市';
     </select>
     <select id="queryDeviceCity" statementType="PREPARED" resultType="map">
         SELECT CITY cName FROM yanguan.YG_CALLID WHERE MCC=#{mcc} AND MNC=#{mnc} AND LAC=#{lac} AND CELL=#{cell} LIMIT 1

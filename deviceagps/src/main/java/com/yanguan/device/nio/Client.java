@@ -50,8 +50,6 @@ public class Client implements InitializingBean {
     private long requestInterval;
     @Value("#{config['agps.city.r']}")
     private long cityR;
-    @Value("#{config['agps.province.r']}")
-    private long provinceR;
     @Autowired
     private DeviceMapper deviceMapper;
 
@@ -113,49 +111,7 @@ public class Client implements InitializingBean {
                         byte[] data = new byte[totalData.length - offset];
                         System.arraycopy(totalData, offset, data, 0, data.length);
                         cityMap.put((String) city.get("CITY_NAME"), data);
-                        Thread.sleep(requestInterval);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        logger.error("Socket IOException..");
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        logger.error("request Thread is Interrupted..");
-                    }
-                };
-                for(Map<String,Object> province:provinces){
-                    try {
-                        Socket client = new Socket(host, port);
-                        OutputStream out = client.getOutputStream();
-                        InputStream in = client.getInputStream();
-                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                        out.write(getConf(province.get("LNG"),province.get("LAT"),String.valueOf(provinceR)).getBytes());
-                        byte[] buf = new byte[4096];
-                        int len = 0, offset = 0;
-                        while ((len = in.read(buf)) > 0)
-                            bos.write(buf, 0, len);
-                        bos.flush();
-                        bos.close();
-                        in.close();
-                        out.close();
-                        client.close();
-                        byte[] totalData = bos.toByteArray();
-                        char[] chars = new char[2048];
-            /* 去除请求头
-            Content-Length: 1704
-            Content-Type: application/ubx
-             */
-                        for (int i = 0; i < totalData.length; i++) {
-                            chars[i] = (char) totalData[i];
-                            if (i >= 8)
-                                if (new String(chars, i - 7, 8).matches("/ubx\\r\\n\\r\\n")) {
-                                    offset = i + 1;
-                                    break;
-                                }
-                        }
-                        logger.info("receive u-blox length:" + totalData.length + "\toffset is:" + offset);
-                        byte[] data = new byte[totalData.length - offset];
-                        System.arraycopy(totalData, offset, data, 0, data.length);
-                        cityMap.put((String) province.get("PROVINCE_NAME"), data);
+                        provinces.stream().filter(map -> map.get("CITY_NAME").equals(city.get("CITY_NAME"))).forEach(map -> cityMap.put((String)map.get("PROVINCE_NAME"),data));
                         Thread.sleep(requestInterval);
                     } catch (IOException e) {
                         e.printStackTrace();
