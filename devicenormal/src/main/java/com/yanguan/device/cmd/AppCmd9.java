@@ -38,6 +38,9 @@ public class AppCmd9 implements IProcess {
             params.put("Device_Elec_Defence_Lon", data.get("lon"));
             params.put("Device_Elec_Defence_Lat", data.get("lat"));
             params.put("Device_ID", devId);
+            Jedis jedis= Constant.jedisPool.getResource();
+            jedis.hdel(Constant.Device_Cmd_Cache,String.valueOf(devId));
+            jedis.close();
             try {
                 deviceMapper.updateByProsInTab(params, Constant.DEVICE_TABLE_REF);
             } catch (Exception e) {

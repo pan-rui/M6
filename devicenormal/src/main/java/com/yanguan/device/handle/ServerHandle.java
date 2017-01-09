@@ -60,7 +60,7 @@ public class ServerHandle extends SimpleChannelInboundHandler<Map<String, Object
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Map<String, Object> map) throws Exception {
         short iType = (short) map.get("iType");
-//        map.forEach((k, v) -> System.out.println("k-->" + k + "\tv--->" + v));      //Test......
+        map.forEach((k, v) -> System.out.println("k-->" + k + "\tv--->" + v));      //Test......
         Object devId = map.get("devId");
         if (iType != 16 && devId != null) {
             DeviceStatus deviceStatus = IdleHandler.getDeviceStatuss().get(devId);

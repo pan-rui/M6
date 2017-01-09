@@ -1,6 +1,8 @@
 package com.yanguan.device.cmd;
 
+import com.sun.tools.internal.jxc.ap.Const;
 import com.yanguan.device.dao.DeviceMapper;
+import com.yanguan.device.model.Constant;
 import com.yanguan.device.mq.AppPush;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
@@ -30,6 +32,6 @@ public class AppCmd0 implements IProcess {
         int cmdType = (int) data.get("cmdType");
         int resultCode = (int) data.get("resultCode");
         Calendar calendar = Calendar.getInstance();
-        appPush.sendMessage(devId, resultCode, calendar.getTimeInMillis(),null);
+        appPush.sendMessage(devId, resultCode, calendar.getTimeInMillis(),data.get("iType")+Constant.SPLIT_CHAR+cmdType);
     }
 }

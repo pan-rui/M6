@@ -38,7 +38,7 @@ public class AppCmd1 implements IProcess {
         int cmdType = (int) data.get("cmdType");
         int resultCode = (int) data.remove("resultCode");
         Calendar calendar = Calendar.getInstance();
-        appPush.sendMessage(devId, resultCode, calendar.getTimeInMillis(), null);
+        appPush.sendMessage(devId, resultCode, calendar.getTimeInMillis(), data.get("iType")+Constant.SPLIT_CHAR+cmdType);
         Object val = data.get("p1");
         if (resultCode == 0) {
             Map<String, Object> params = new LinkedHashMap<>();
