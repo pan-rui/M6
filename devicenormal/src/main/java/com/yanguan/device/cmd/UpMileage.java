@@ -34,7 +34,7 @@ public class UpMileage implements IProcess {
         appPush.sendMessage(devId,Constant.Push_Device_Mileage,System.currentTimeMillis(),mileage);
         int resultCode=Constant.Push_Cmd_Success;
         try {
-            devNormalMapper.insertOrUpdateMileage(devId, mileage);
+            devNormalMapper.insertOrUpdateMileage(mileage,devId);
         } catch (Exception e) {
             e.printStackTrace();
             resultCode = Constant.Push_Cmd_Fail;

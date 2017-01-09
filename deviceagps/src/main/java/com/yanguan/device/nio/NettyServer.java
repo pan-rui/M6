@@ -15,6 +15,7 @@ import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.bytes.ByteArrayEncoder;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import org.apache.log4j.Logger;
@@ -62,12 +63,12 @@ public class NettyServer {
 
     @PostConstruct
     public void initialize() {
-         bossGroup = new EpollEventLoopGroup(bossThreads);
-         workerGroup = new EpollEventLoopGroup(workThreads);
-        ((EpollEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
-//        bossGroup = new NioEventLoopGroup(bossThreads);
-//        workerGroup = new NioEventLoopGroup(workThreads);
-//        ((NioEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
+//         bossGroup = new EpollEventLoopGroup(bossThreads);
+//         workerGroup = new EpollEventLoopGroup(workThreads);
+//        ((EpollEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
+        bossGroup = new NioEventLoopGroup(bossThreads);
+        workerGroup = new NioEventLoopGroup(workThreads);
+        ((NioEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
         bootstrap = new ServerBootstrap();
         bootstrap.option(ChannelOption.SO_REUSEADDR, true)
                 .option(EpollChannelOption.SO_REUSEPORT, true)
@@ -79,8 +80,8 @@ public class NettyServer {
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
         bootstrap.group(bossGroup, workerGroup);
-        bootstrap.channel(EpollServerSocketChannel.class);
-//        bootstrap.channel(NioServerSocketChannel.class);
+//        bootstrap.channel(EpollServerSocketChannel.class);
+        bootstrap.channel(NioServerSocketChannel.class);
         ThreadPoolExecutor tpe=new ThreadPoolExecutor(coreSize,maxSize,keepAlive, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>(maxSize));
         tpe.allowCoreThreadTimeOut(true);
         eventExecutor = new DefaultEventExecutor(tpe);
@@ -94,7 +95,7 @@ public class NettyServer {
             @Override
             public void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
-
+                pipeline.addLast(new ByteArrayEncoder());
                 pipeline.addLast(eventExecutor,serverHandle);
             }
         });

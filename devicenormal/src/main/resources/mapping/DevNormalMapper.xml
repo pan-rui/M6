@@ -15,7 +15,7 @@
         UPDATE yanguan.YG_IoT_Card SET Active_Time=IFNULL(Active_Time,CURRENT_TIMESTAMP) WHERE Iccid=#{iccid}
     </update>
     <!--insertOrUpdateMilrage-->
-    <insert id="" statementType="PREPARED">
+    <insert id="insertOrUpdateMileage" statementType="PREPARED">
          INSERT INTO
         yanguan.YG_DAY_MILRAGE
             (

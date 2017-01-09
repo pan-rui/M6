@@ -116,6 +116,7 @@ public class Client implements InitializingBean {
                         Thread.sleep(requestInterval);
                     } catch (IOException e) {
                         e.printStackTrace();
+                        logger.error("Socket IOException..");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                         logger.error("request Thread is Interrupted..");
@@ -158,6 +159,7 @@ public class Client implements InitializingBean {
                         Thread.sleep(requestInterval);
                     } catch (IOException e) {
                         e.printStackTrace();
+                        logger.error("Socket IOException..");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                         logger.error("request Thread is Interrupted..");
@@ -166,10 +168,7 @@ public class Client implements InitializingBean {
 /*            //缓存到redis
             redis.putAGps(data);
             logger.info("saved AGps data success........byte length:"+data.length);*/
-                //缓存到HBase
-                Object result = null;
-                if (result != null) logger.info("saved AGps to HBase success.......");
-                else logger.error("saved AGps to HBase FAIL.......");
+                logger.info("all city agps download over...");
                 Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
                     @Override
                     public void uncaughtException(Thread t, Throwable e) {
