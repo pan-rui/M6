@@ -51,6 +51,7 @@ public class ServerHandle extends SimpleChannelInboundHandler<ByteBuf> {
         byte[] data=Client.cityMap.get(cName);
         if(data==null){
             if(!Client.cityMap.isEmpty()) data = (byte[]) Client.cityMap.values().toArray()[0];
+            else return;
         }
         ByteBuf byteBuf1= Unpooled.buffer();
         byteBuf1.writeShort(2 + 2 + data.length + 2);
