@@ -40,7 +40,7 @@ public class ActiveCard implements IProcess {
                 .append(data.get("devId")).append(Constant.SPLIT_CHAR);
         int exeResult = 0;
         if (!resultList.isEmpty()) {
-            commonService.activeCard(resultList.get(0).get("ICCID"), data.get("devId"));
+            commonService.activeCard(resultList.get(0).get("Iccid"), data.get("devId"));
         }else exeResult=1;
         sb.append(exeResult).append(Constant.SPLIT_CHAR).append(65535);
         channel.writeAndFlush(sb.toString());

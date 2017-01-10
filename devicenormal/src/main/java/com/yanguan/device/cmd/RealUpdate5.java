@@ -48,7 +48,7 @@ public class RealUpdate5 implements IProcess {
             jedis.del(key);
         }
         jedis.close();*/
-        appPush.sendMessage(devId, Constant.Push_Device_Real_Track, (long) time1*1000l, lon1.toString() + Constant.SPLIT_CHAR + lat1 + Constant.SPLIT_CHAR + time1 + Constant.JOIN_CHAR + lon2.toString() + Constant.SPLIT_CHAR + lat2 + Constant.SPLIT_CHAR + time2 + Constant.JOIN_CHAR + lon3.toString() + Constant.SPLIT_CHAR + lat3 + Constant.SPLIT_CHAR + time3 + Constant.JOIN_CHAR + lon4.toString() + Constant.SPLIT_CHAR + lat4 + Constant.SPLIT_CHAR + time4+Constant.JOIN_CHAR+lon5.toString()+lat5+time5);
+        appPush.sendMessage(devId, Constant.Push_Device_Real_Track, ((int) time1)*1000l, lon1.toString() + Constant.SPLIT_CHAR + lat1 + Constant.SPLIT_CHAR + time1 + Constant.JOIN_CHAR + lon2.toString() + Constant.SPLIT_CHAR + lat2 + Constant.SPLIT_CHAR + time2 + Constant.JOIN_CHAR + lon3.toString() + Constant.SPLIT_CHAR + lat3 + Constant.SPLIT_CHAR + time3 + Constant.JOIN_CHAR + lon4.toString() + Constant.SPLIT_CHAR + lat4 + Constant.SPLIT_CHAR + time4+Constant.JOIN_CHAR+lon5.toString()+lat5+time5);
         synchronized (GpsWriteDB.gpsList) {
             GpsWriteDB.gpsList.add(new Object[]{devId,lon1,lat1,time1});
             GpsWriteDB.gpsList.add(new Object[]{devId,lon2,lat2,time2});
