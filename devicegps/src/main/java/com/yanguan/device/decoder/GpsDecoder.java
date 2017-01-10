@@ -23,7 +23,9 @@ public class GpsDecoder extends MessageToMessageDecoder<DatagramPacket>{
     @Override
     protected void decode(ChannelHandlerContext ctx, DatagramPacket msg, List<Object> out) throws Exception {
         ByteBuf byteBuf=msg.content();
-        byteBuf.readShort();
+        short length=byteBuf.readShort();
+        System.out.println("Send length:"+length+"\t Revericed:"+byteBuf.readableBytes());
+        //        if(length!=byteBuf.readableBytes()) return;
         m6Decoder.decode(ctx,byteBuf,out);
         msg.retain();
         Map<String, Object> data = (Map<String, Object>) out.get(0);

@@ -28,26 +28,19 @@ public class M6Decoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
         int length = byteBuf.readableBytes();
-//        logger.info("byteBuf长度\t" + length);      //Test.....
-/*        for (int i = 0; i < length; i++) {
-            byte by = byteBuf.readByte();
-            System.out.println("================" + i + "===============");
-            System.out.println(by);
-        }*/
         if (length < 8) {
             byteBuf.readerIndex(byteBuf.readerIndex() + length);
             return;
         }
-        byte[] iType = new byte[2];
-        byteBuf.readBytes(iType, 0, 2);
+//        byte[] iType = new byte[2];
+//        byteBuf.readBytes(iType, 0, 2);
         final Map<String, Object> data = new LinkedHashMap();
-        short itype = ByteConvertUtil.byteArryToShort(iType);
+//        short itype = ByteConvertUtil.byteArryToShort(iType);
+        short itype = byteBuf.readShort();
         ProtocolEnum protocol = ProtocolEnum.valueOfType(itype);
-//        StringBuffer sb = new StringBuffer(String.valueOf(itype));
         data.put("iType", itype);
         boolean[] join = new boolean[]{false};
         if (protocol == null) return;
-//        Map<String,Integer> receiveMap=protocol.getReceiveMap().keySet()
         protocol.getReceiveMap().forEach((k, v) -> {
             String ke = k.replaceAll("[~`]{1}", "");
             if (join[0]) {

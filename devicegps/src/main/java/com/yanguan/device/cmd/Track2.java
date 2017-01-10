@@ -32,10 +32,10 @@ public class Track2 implements IProcess {
         Object time2 = data.get("time2");
         Object[] gps1=new Object[]{devId, lon1, lat1, time1};
         Object[] gps2=new Object[]{devId, lon2, lat2, time2};
+        channel.writeAndFlush(new DefaultAddressedEnvelope<String,SocketAddress>(data.get("iType")+Constant.SPLIT_CHAR+devId+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success+Constant.SPLIT_CHAR+0,(SocketAddress)data.get("sender"),(SocketAddress)data.get("recipient")));
         synchronized (GpsWriteDB.gpsList) {
             GpsWriteDB.gpsList.add(gps1);
             GpsWriteDB.gpsList.add(gps2);
         }
-        channel.writeAndFlush(new DefaultAddressedEnvelope<String,SocketAddress>(data.get("iType")+Constant.SPLIT_CHAR+devId+Constant.SPLIT_CHAR+Constant.Push_Cmd_Success+Constant.SPLIT_CHAR+0,(SocketAddress)data.get("sender"),(SocketAddress)data.get("recipient")));
     }
 }

@@ -71,8 +71,7 @@ public class NettyServer {
         bootstrap = new Bootstrap();
         bootstrap.option(ChannelOption.SO_BROADCAST,true)
                 .option(ChannelOption.SO_BACKLOG, 1024)
-                .option(ChannelOption.RCVBUF_ALLOCATOR, new AdaptiveRecvByteBufAllocator(64, 1400, 65536))
-                .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
+                .option(ChannelOption.SO_RCVBUF, 1024*64);
         bootstrap.group(workerGroup);
         bootstrap.channel(NioDatagramChannel.class);
         logger.info("Initialized the Schedu serivce.");
@@ -85,8 +84,6 @@ public class NettyServer {
             @Override
             public void initChannel(DatagramChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
-//                pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(10240, 0, 2, 0, 2));
-//                pipeline.addLast("frameEncoder", new LengthFieldPrepender(2,false));//生成的长度值不包含长度本身的长度
                 pipeline.addLast(gpsDecoder);
                 pipeline.addLast(dataEncoder);
                 pipeline.addLast(serverHandle);
