@@ -70,7 +70,6 @@ public class NettyServer {
         ((NioEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
         bootstrap = new Bootstrap();
         bootstrap.option(ChannelOption.SO_BROADCAST,true)
-                .option(ChannelOption.SO_BACKLOG, 1024)
                 .option(ChannelOption.SO_RCVBUF, 1024*64);
         bootstrap.group(workerGroup);
         bootstrap.channel(NioDatagramChannel.class);

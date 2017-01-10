@@ -6,6 +6,7 @@ import io.netty.channel.socket.DatagramPacket;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,16 +18,17 @@ import java.util.Map;
  * @UpdateDateTime: \$Date$
  */
 @Component
-public class GpsDecoder extends MessageToMessageDecoder<DatagramPacket>{
+public class GpsDecoder extends MessageToMessageDecoder<DatagramPacket> {
     @Autowired
     private M6Decoder m6Decoder;
+
     @Override
     protected void decode(ChannelHandlerContext ctx, DatagramPacket msg, List<Object> out) throws Exception {
-        ByteBuf byteBuf=msg.content();
-        short length=byteBuf.readShort();
-        System.out.println("Send length:"+length+"\t Revericed:"+byteBuf.readableBytes());
-        //        if(length!=byteBuf.readableBytes()) return;
-        m6Decoder.decode(ctx,byteBuf,out);
+        ByteBuf byteBuf = msg.content();
+        short length = byteBuf.readShort();
+        System.out.println("Send length:" + length + "\t Revericed:" + byteBuf.readableBytes());
+        if (length != byteBuf.readableBytes()) return;
+        m6Decoder.decode(ctx, byteBuf, out);
         msg.retain();
         Map<String, Object> data = (Map<String, Object>) out.get(0);
         data.put("sender", msg.sender());
