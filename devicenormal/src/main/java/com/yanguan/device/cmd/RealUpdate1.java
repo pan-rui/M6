@@ -1,4 +1,5 @@
 package com.yanguan.device.cmd;
+
 import com.yanguan.device.model.Constant;
 import com.yanguan.device.mq.AppPush;
 import com.yanguan.device.task.GpsWriteDB;
