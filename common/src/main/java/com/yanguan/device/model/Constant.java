@@ -1,8 +1,9 @@
 package com.yanguan.device.model;
 
 import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.core.RedisHash;
 import redis.clients.jedis.JedisPool;
+
+import java.util.TimeZone;
 
 /**
  * @Description: ${Description}

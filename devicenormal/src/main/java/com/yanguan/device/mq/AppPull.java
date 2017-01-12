@@ -1,7 +1,7 @@
 package com.yanguan.device.mq;
 
-import com.yanguan.device.model.Constant;
 import com.yanguan.device.handle.IdleHandler;
+import com.yanguan.device.model.Constant;
 import com.yanguan.device.task.CmdWriteDB;
 import io.netty.channel.Channel;
 import io.netty.util.concurrent.Future;

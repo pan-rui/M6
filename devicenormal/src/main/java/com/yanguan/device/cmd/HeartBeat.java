@@ -1,7 +1,7 @@
 package com.yanguan.device.cmd;
 
-import com.yanguan.device.model.Constant;
 import com.yanguan.device.handle.IdleHandler;
+import com.yanguan.device.model.Constant;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

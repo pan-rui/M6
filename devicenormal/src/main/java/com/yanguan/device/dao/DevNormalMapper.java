@@ -1,10 +1,7 @@
 package com.yanguan.device.dao;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
-
-import java.util.Map;
 
 /**
  * @Description: ${Description}

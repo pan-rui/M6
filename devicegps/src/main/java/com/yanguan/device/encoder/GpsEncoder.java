@@ -1,18 +1,12 @@
 package com.yanguan.device.encoder;
 
-import com.yanguan.device.util.ByteConvertUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.buffer.UnpooledByteBufAllocator;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.DefaultAddressedEnvelope;
-import io.netty.handler.codec.DatagramPacketEncoder;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 /**

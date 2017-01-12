@@ -1,7 +1,5 @@
 package com.yanguan.device.vo;
 
-import io.netty.channel.Channel;
-
 /**
  * @Description: ${Description}
  * @Create: 潘锐 (2016-12-19 18:10)

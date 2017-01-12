@@ -2,7 +2,6 @@ package device;
 
 import com.yanguan.device.decoder.M6Decoder;
 import com.yanguan.device.handle.ScheduServerHandle;
-import com.yanguan.device.util.ByteConvertUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -17,8 +16,6 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.bytes.ByteArrayEncoder;
 import org.apache.log4j.Logger;
-
-import java.nio.ByteBuffer;
 
 /**
  * @Description: ${Description}

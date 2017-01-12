@@ -34,6 +34,8 @@ public class StatusUpdate implements IProcess {
         params.put("Device_Defence_Status", data.get("defence"));
         params.put("Device_Ptl_Elec_Status", data.get("power"));
         params.put("Device_Broke", data.get("brake"));
+        params.put("Device_Closed", data.get("close"));
+        params.put("Acc_Status", data.get("acc"));
         params.put("Device_ID", devId);
         try {
             deviceMapper.updateByProsInTab(params, Constant.DEVICE_TABLE_REF);

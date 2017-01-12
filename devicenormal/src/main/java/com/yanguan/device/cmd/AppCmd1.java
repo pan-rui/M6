@@ -3,19 +3,16 @@ package com.yanguan.device.cmd;
 import com.yanguan.device.dao.DeviceMapper;
 import com.yanguan.device.model.Constant;
 import com.yanguan.device.mq.AppPush;
-import com.yanguan.device.service.CommonService;
 import com.yanguan.device.task.CmdWriteDB;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.Jedis;
 
 import java.util.Calendar;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.TimeZone;
 
 /**
  * @Description: ${Description}

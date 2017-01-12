@@ -1,6 +1,5 @@
 package com.yanguan.device.cmd;
 
-import com.yanguan.device.dao.DevNormalMapper;
 import com.yanguan.device.dao.DeviceMapper;
 import com.yanguan.device.model.Constant;
 import com.yanguan.device.service.CommonService;
@@ -9,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

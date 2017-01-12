@@ -1,14 +1,12 @@
 package com.yanguan.device.cmd;
 
 import com.yanguan.device.dao.DevNormalMapper;
-import com.yanguan.device.handle.IdleHandler;
 import com.yanguan.device.model.Constant;
 import com.yanguan.device.mq.AppPush;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.Jedis;
 
 import java.util.Map;
 

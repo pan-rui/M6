@@ -9,6 +9,7 @@ package com.yanguan.device.handle;
 import com.yanguan.device.dao.DeviceMapper;
 import com.yanguan.device.nio.Client;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
@@ -54,11 +55,11 @@ public class ServerHandle extends SimpleChannelInboundHandler<ByteBuf> {
             else return;
         }
         ByteBuf byteBuf1= Unpooled.buffer();
-        byteBuf1.writeShort(2 + 2 + data.length + 2);
+        byteBuf1.writeShort(2 + data.length + 2);
         byteBuf1.writeShort(iType);
         byteBuf1.writeBytes(data);
         byteBuf1.writeShort(verifyCode);
-        ChannelFuture future = channelHandlerContext.writeAndFlush(byteBuf1.array());
+        ChannelFuture future = channelHandlerContext.writeAndFlush(ByteBufUtil.getBytes(byteBuf1));
         future.channel().flush();
         future.addListener(new GenericFutureListener<Future<? super Void>>() {
             @Override

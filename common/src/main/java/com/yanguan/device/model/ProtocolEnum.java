@@ -19,7 +19,7 @@ public enum ProtocolEnum {
     App_Cmd0(20, new String[]{"pName-2", "sVer-2", "devId-4","cmdType-1","resultCode-1","verify-2"}, new int[]{2, 2, 2, 4, 1, 2}),
     App_Cmd1(21, new String[]{"pName-2", "sVer-2", "devId-4","cmdType-1",  "p1-1","resultCode-1","verify-2"}, new int[]{2, 2, 2, 4, 1, 1, 2}),
     App_Cmd9(29, new String[]{"pName-2", "sVer-2", "devId-4",  "p1-2","`lon-4","`lat-4","resultCode-1","verify-2"}, new int[]{2, 2, 2, 4, 2,104,104, 2}),
-    Status_Update(3, new String[]{"pName-2","sVer-2","devId-4","sport-1","voltage-1","defence-1","power-1","brake-1","verify-2"}, new int[]{}),
+    Status_Update(3, new String[]{"pName-2","sVer-2","devId-4","sport-1","voltage-1","defence-1","power-1","brake-1","close-1","acc-1","verify-2"}, new int[]{}),
     Real_Update1(51, new String[]{"pName-2","sVer-2","devId-4","sateSize-1","`lon1-4","`lat1-4","time1-4","verify-2"}, new int[]{}),
     Real_Update2(52, new String[]{"pName-2","sVer-2","devId-4","sateSize-1","`lon1-4","`lat1-4","time1-4","`lon2-4","`lat2-4","time2-4","verify-2"}, new int[]{}),
     Real_Update3(53, new String[]{"pName-2","sVer-2","devId-4","sateSize-1","`lon1-4","`lat1-4","time-4","`lon2-4","`lat2-4","time2-4","`lon3-4","`lat3-4","time3-4","verify-2"}, new int[]{}),

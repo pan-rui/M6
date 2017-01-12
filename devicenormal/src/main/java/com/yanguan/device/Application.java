@@ -3,11 +3,11 @@ package com.yanguan.device;
 import com.yanguan.device.handle.IdleHandler;
 import com.yanguan.device.nio.NettyServer;
 import com.yanguan.device.vo.DeviceStatus;
-import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.TimeZone;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -102,6 +102,7 @@ public class Application {
     }
 
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
         Application.getApplication().start();
     }
 }

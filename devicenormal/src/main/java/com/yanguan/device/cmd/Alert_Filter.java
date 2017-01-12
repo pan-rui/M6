@@ -1,7 +1,6 @@
 package com.yanguan.device.cmd;
 
 import com.yanguan.device.model.Constant;
-import com.yanguan.device.mq.AppPush;
 import com.yanguan.device.service.CommonService;
 import com.yanguan.device.task.RmdWriteDB;
 import io.netty.channel.Channel;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
-import java.util.Calendar;
 import java.util.Map;
 
 /**

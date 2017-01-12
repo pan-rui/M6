@@ -1,6 +1,5 @@
 package com.yanguan.device.cmd;
 
-import com.yanguan.device.dao.DeviceMapper;
 import com.yanguan.device.model.Constant;
 import com.yanguan.device.mq.AppPush;
 import io.netty.channel.Channel;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * @Description: ${Description}

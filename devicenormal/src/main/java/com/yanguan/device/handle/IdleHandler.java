@@ -20,10 +20,12 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.StreamSupport;
 
@@ -36,8 +38,8 @@ import java.util.stream.StreamSupport;
 @ChannelHandler.Sharable
 public class IdleHandler extends ChannelDuplexHandler {
     private static final Logger logger = Logger.getLogger(IdleHandler.class);
-    protected static ConcurrentHashMap<Integer,DeviceStatus> deviceStatuss=new ConcurrentHashMap<Integer,DeviceStatus>();
-    protected static ConcurrentHashMap<Integer,Channel> connectionMap=new ConcurrentHashMap<Integer,Channel>();
+    protected static ConcurrentHashMap<Integer, DeviceStatus> deviceStatuss = new ConcurrentHashMap<Integer, DeviceStatus>();
+    protected static ConcurrentHashMap<Integer, Channel> connectionMap = new ConcurrentHashMap<Integer, Channel>();
     public static final ByteBuf HEARTBEAT_SEQUENCE = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(
             "HEARTBEAT", CharsetUtil.UTF_8));
     @Autowired
@@ -61,26 +63,28 @@ public class IdleHandler extends ChannelDuplexHandler {
 
     //存在返回true
     public boolean removeDevice(Channel channel) {
-        Set<Map.Entry<Integer,Channel>> entry=connectionMap.entrySet();
-        Optional<Map.Entry<Integer,Channel>> optional=StreamSupport.stream(entry.spliterator(),true).filter(en->{return en.getValue()==channel?true:false;}).findFirst();
-        if(optional.isPresent()){
-            Map.Entry<Integer,Channel> ent = optional.get();
+        Set<Map.Entry<Integer, Channel>> entry = connectionMap.entrySet();
+        Optional<Map.Entry<Integer, Channel>> optional = StreamSupport.stream(entry.spliterator(), true).filter(en -> {
+            return en.getValue() == channel ? true : false;
+        }).findFirst();
+        if (optional.isPresent()) {
+            Map.Entry<Integer, Channel> ent = optional.get();
             entry.remove(ent);
-            Jedis jedis=Constant.jedisPool.getResource();
+            Jedis jedis = Constant.jedisPool.getResource();
             jedis.hdel(Constant.Device_Is_OnLine, String.valueOf(ent.getKey()));
             jedis.close();
-            Calendar calendar=Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
             deviceStatuss.remove(ent.getKey());
             //入队推送
-            appPush.sendMessage(ent.getKey(),Constant.Push_OffineLine,calendar.getTimeInMillis(),null);
+            appPush.sendMessage(ent.getKey(), Constant.Push_OffineLine, calendar.getTimeInMillis(), null);
             //写库
             try {
                 Map<String, Object> params = new LinkedHashMap<>();
-                params.put("Device_Offline_Time",calendar.getTime() );
-                params.put("Device_ID",ent.getKey());
+                params.put("Device_Offline_Time", new Date());
+                params.put("Device_ID", ent.getKey());
                 deviceMapper.updateByProsInTab(params, Constant.DEVICE_TABLE_REF);
             } catch (Exception e) {
-                logger.error("Device is Offine ,but update "+Constant.DEVICE_TABLE_REF+"  the FAIL.DeviceID:"+ent.getKey());
+                logger.error("Device is Offine ,but update " + Constant.DEVICE_TABLE_REF + "  the FAIL.DeviceID:" + ent.getKey());
             }
             return true;
         }
@@ -89,23 +93,26 @@ public class IdleHandler extends ChannelDuplexHandler {
 
     //存在返回true
     public boolean putDevice(int devId, Channel channel) {
-        Channel channel1=connectionMap.putIfAbsent(devId, channel);
-        if(channel1==null){
-            Jedis jedis=Constant.jedisPool.getResource();
+        Channel channel1 = connectionMap.putIfAbsent(devId, channel);
+        Calendar calendar = Calendar.getInstance();
+        if (channel1 == null) {
+            Jedis jedis = Constant.jedisPool.getResource();
             jedis.hset(Constant.Device_Is_OnLine, String.valueOf(devId), "1");
             jedis.close();
-            Calendar calendar=Calendar.getInstance();
             deviceStatuss.put(devId, new DeviceStatus(calendar.getTimeInMillis()));
-            appPush.sendMessage(devId,Constant.Push_OnLine,calendar.getTimeInMillis(),null);
+            appPush.sendMessage(devId, Constant.Push_OnLine, calendar.getTimeInMillis(), null);
             try {
                 Map<String, Object> params = new LinkedHashMap<>();
-                params.put("Dev_Login_Time",calendar.getTime() );
-                params.put("Device_ID",devId);
-                deviceMapper.updateByProsInTab(params,Constant.DEVICE_TABLE_REF);
+                params.put("Dev_Login_Time", new Date());
+                params.put("Device_ID", devId);
+                deviceMapper.updateByProsInTab(params, Constant.DEVICE_TABLE_REF);
             } catch (Exception e) {
-                logger.error("Device is onLine,but update "+Constant.DEVICE_TABLE_REF+"  the FAIL.DeviceID:"+devId);
+                logger.error("Device is onLine,but update " + Constant.DEVICE_TABLE_REF + "  the FAIL.DeviceID:" + devId);
             }
             return false;
+        } else {
+            DeviceStatus status = deviceStatuss.get(devId);
+            if (status != null) status.setLastSendTime(calendar.getTimeInMillis());
         }
         return true;
     }
@@ -129,7 +136,8 @@ public class IdleHandler extends ChannelDuplexHandler {
                         break;
                     }
                 }*/
-            } else if (stateEvent.state() == IdleState.ALL_IDLE) {}
+            } else if (stateEvent.state() == IdleState.ALL_IDLE) {
+            }
         } else {
             super.userEventTriggered(ctx, evt);
         }

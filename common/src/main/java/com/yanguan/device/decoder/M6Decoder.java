@@ -3,10 +3,8 @@ package com.yanguan.device.decoder;
 import com.yanguan.device.model.ProtocolEnum;
 import com.yanguan.device.util.ByteConvertUtil;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import io.netty.handler.codec.MessageToMessageDecoder;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 

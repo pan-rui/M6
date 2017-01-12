@@ -14,9 +14,9 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollChannelOption;
-import io.netty.channel.epoll.EpollEventLoopGroup;
-import io.netty.channel.epoll.EpollServerSocketChannel;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -71,12 +71,12 @@ public class NettyServer {
 
     @PostConstruct
     public void initialize() {
-         bossGroup = new EpollEventLoopGroup(bossThreads);
-         workerGroup = new EpollEventLoopGroup(workThreads);
-        ((EpollEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
-//        bossGroup = new NioEventLoopGroup(bossThreads);
-//        workerGroup = new NioEventLoopGroup(workThreads);
-//        ((NioEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
+//         bossGroup = new EpollEventLoopGroup(bossThreads);
+//         workerGroup = new EpollEventLoopGroup(workThreads);
+//        ((EpollEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
+        bossGroup = new NioEventLoopGroup(bossThreads);
+        workerGroup = new NioEventLoopGroup(workThreads);
+        ((NioEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
         bootstrap = new ServerBootstrap();
         bootstrap.option(ChannelOption.SO_REUSEADDR, true)
                 .option(EpollChannelOption.SO_REUSEPORT, true)
@@ -88,8 +88,8 @@ public class NettyServer {
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
         bootstrap.group(bossGroup, workerGroup);
-        bootstrap.channel(EpollServerSocketChannel.class);
-//        bootstrap.channel(NioServerSocketChannel.class);
+//        bootstrap.channel(EpollServerSocketChannel.class);
+        bootstrap.channel(NioServerSocketChannel.class);
 
         logger.info("Initialized the Schedu serivce.");
 
@@ -101,7 +101,7 @@ public class NettyServer {
             @Override
             public void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
-                pipeline.addLast(new IdleStateHandler(readIdle, 0, allIdle, TimeUnit.SECONDS));
+                pipeline.addLast(new IdleStateHandler(readIdle, 0, allIdle, TimeUnit.MILLISECONDS));
                 pipeline.addLast(idleHandler);
                 pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(10240, 0, 2, 0, 2));
                 pipeline.addLast("frameEncoder", new LengthFieldPrepender(2,false));//生成的长度值不包含长度本身的长度

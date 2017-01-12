@@ -2,8 +2,6 @@ package com.yanguan.device.cmd;
 
 import com.yanguan.device.dao.DeviceMapper;
 import com.yanguan.device.model.Constant;
-import com.yanguan.device.mq.AppPull;
-import com.yanguan.device.service.CommonService;
 import com.yanguan.device.task.CmdWriteDB;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
@@ -14,6 +12,7 @@ import redis.clients.jedis.Jedis;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * @Description: ${Description}
@@ -31,7 +30,6 @@ public class AppCmd9 implements IProcess {
     public void process(Channel channel, Map<String, Object> data) {
         int devId = (int) data.get("devId");
         int resultCode = (int) data.get("resultCode");
-        Calendar calendar = Calendar.getInstance();
         if (resultCode == 0) {
             Map<String, Object> params = new LinkedHashMap<>();
             params.put("Device_Elec_Defence_Value", data.get("p1"));

@@ -4,10 +4,8 @@ import com.yanguan.device.model.Constant;
 import com.yanguan.device.task.GpsWriteDB;
 import io.netty.channel.Channel;
 import io.netty.channel.DefaultAddressedEnvelope;
-import io.netty.util.AttributeKey;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.Jedis;
 
 import java.net.SocketAddress;
 import java.util.Map;

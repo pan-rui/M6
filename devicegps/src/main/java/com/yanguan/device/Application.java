@@ -5,6 +5,8 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.TimeZone;
+
 /**
  * @Description: ${Description}
  * @Create: 潘锐 (2016-11-27 14:35)
@@ -60,6 +62,7 @@ public class Application {
     }
 
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
         Application.getApplication().start();
     }
 }
