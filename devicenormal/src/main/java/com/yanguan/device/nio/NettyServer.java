@@ -14,6 +14,8 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollChannelOption;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -71,12 +73,12 @@ public class NettyServer {
 
     @PostConstruct
     public void initialize() {
-//         bossGroup = new EpollEventLoopGroup(bossThreads);
-//         workerGroup = new EpollEventLoopGroup(workThreads);
-//        ((EpollEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
-        bossGroup = new NioEventLoopGroup(bossThreads);
-        workerGroup = new NioEventLoopGroup(workThreads);
-        ((NioEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
+         bossGroup = new EpollEventLoopGroup(bossThreads);
+         workerGroup = new EpollEventLoopGroup(workThreads);
+        ((EpollEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
+//        bossGroup = new NioEventLoopGroup(bossThreads);
+//        workerGroup = new NioEventLoopGroup(workThreads);
+//        ((NioEventLoopGroup) workerGroup).setIoRatio(workerEventLoopIORatio);
         bootstrap = new ServerBootstrap();
         bootstrap.option(ChannelOption.SO_REUSEADDR, true)
                 .option(EpollChannelOption.SO_REUSEPORT, true)
@@ -88,8 +90,8 @@ public class NettyServer {
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
         bootstrap.group(bossGroup, workerGroup);
-//        bootstrap.channel(EpollServerSocketChannel.class);
-        bootstrap.channel(NioServerSocketChannel.class);
+        bootstrap.channel(EpollServerSocketChannel.class);
+//        bootstrap.channel(NioServerSocketChannel.class);
 
         logger.info("Initialized the Schedu serivce.");
 
