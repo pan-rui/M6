@@ -65,15 +65,16 @@ public class Application {
 
             @Override
             public void run() {
-                logger.info("offine device .....");
                 long curTime = System.currentTimeMillis();
                 for (int devId : IdleHandler.getConnectionMap().keySet()) {
                     DeviceStatus status = IdleHandler.getDeviceStatuss().get(devId);
                     if (status != null && curTime - status.getLastSendTime() >= server.getWriteIdle()) {
+                    	 logger.info("schedu remove offine device .....:"+devId);
                         IdleHandler.getConnectionMap().remove(devId);
                         IdleHandler.getDeviceStatuss().remove(devId);
                     }
                 }
+  
                 Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
                     @Override
                     public void uncaughtException(Thread t, Throwable e) {

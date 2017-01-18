@@ -7,6 +7,7 @@ import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,14 +32,13 @@ public class ActiveCard implements IProcess {
     public void process(Channel channel, Map<String, Object> data) {
         Map<String, Object> params = new LinkedHashMap<>();
         params.put("Device_ID", data.get("devId"));
-        List<Map<String, Object>> resultList = deviceMapper.queryByProsInTab(params, Constant.DEVICE_TABLE_INFO);
         StringBuffer sb = new StringBuffer(data.get("iType") + Constant.SPLIT_CHAR);
         sb.append(data.get("pName")).append(Constant.SPLIT_CHAR)
                 .append(data.get("sVer")).append(Constant.SPLIT_CHAR)
                 .append(data.get("devId")).append(Constant.SPLIT_CHAR);
         int exeResult = 0;
-        if (!resultList.isEmpty()) {
-            commonService.activeCard(resultList.get(0).get("Iccid"), data.get("devId"));
+        if (!StringUtils.isEmpty(data.get("iccid"))) {
+            commonService.activeCard(data.get("iccid"), data.get("devId"));
         }else exeResult=1;
         sb.append(exeResult).append(Constant.SPLIT_CHAR).append(65535);
         channel.writeAndFlush(sb.toString());

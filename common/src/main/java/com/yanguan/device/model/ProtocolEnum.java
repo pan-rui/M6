@@ -11,8 +11,17 @@ import java.util.Map;
  * @UpdateDateTime: \$Date$
  */
 public enum ProtocolEnum {
-    SCHEDU(0,new String[]{"backup-1","company-2","imei-8","base1-2","base2-2","base3-2","base4-2","verify-2"},new int[]{2,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,2}),
-    SCHEDU_SINGLE(1,new String[]{"backup-1","company-2","imei-8","base1-4","base2-4","base3-4","base4-4","sType-1","verify-2"},new int[]{2,2,1,1,1,1,2,1,2}),
+    SCHEDU(0,new String[]{"backup-1","company-2","imei-8","base1-2","base2-2","base3-2","base4-2","verify-2"},new int[]{2,2,
+    		1,1,1,1,1,2,
+    		1,1,1,1,1,2,
+    		1,1,1,1,1,2,
+    		1,1,1,1,1,2,
+    		1,1,1,1,1,2,
+    		1,1,1,1,1,2,
+    		2}),
+    SCHEDU_SINGLE(1,new String[]{"backup-1","company-2","imei-8","base1-4","base2-4","base3-4","base4-4","sType-1","verify-2"},new int[]{2,2,
+    		1,1,1,1,1,2,
+    		1,2}),
     UP_DevAct(2,new String[]{"imei-8","~softVer...-5","~softVer..-3","~softVer.-2","softVer-1","~iccid-20","verify-2"},new int[]{2,8,205,203,202,1,220,1,2}),
     Take_DevID(7,new String[]{"pName-2","sVer-2","imei-8","~softVer...-5","~softVer..-3","~softVer.-2","softVer-1","~iccid-20","verify-2"},new int[]{2,2,2,4,2}),
     Active_Card(9, new String[]{"pName-2", "sVer-2", "devId-4", "~iccid-20", "verify-2"}, new int[]{2, 2, 2, 4, 1, 2}),
@@ -35,7 +44,10 @@ public enum ProtocolEnum {
     Track4(44, new String[]{"devId-4","stateSize1-1","`lon1-4","`lat1-4","time1-4","stateSize2-1","`lon2-4","`lat2-4","time2-4","stateSize3-1","`lon3-4","`lat3-4","time3-4","stateSize4-1","`lon4-4","`lat4-4","time4-4","verify-2"}, new int[]{2,4,1,2}),
     Track5(45, new String[]{"devId-4","stateSize1-1","`lon1-4","`lat1-4","time1-4","stateSize2-1","`lon2-4","`lat2-4","time2-4","stateSize3-1","`lon3-4","`lat3-4","time3-4","stateSize4-1","`lon4-4","`lat4-4","time4-4","stateSize5-1","`lon5-4","`lat5-4","time5-4","verify-2"}, new int[]{2,4,1,2}),
     Up_Mileage(17, new String[]{"devId-4", "`mileage-4", "verify-2"}, new int[]{2,1, 2}),
-    HeartBeat(16, new String[]{"devId-4", "gsmSignal-1", "verify-2"}, new int[]{2,1, 2});
+    HeartBeat(16, new String[]{"devId-4", "gsmSignal-1", "verify-2"}, new int[]{2,1, 2}),
+    
+    Sync_Time(18, new String[]{"devId-4", "verify-2"}, new int[]{2,4, 2});
+    
     private Map<String, Integer> receiveMap;
     private int[] sendDataLeng;
     private int fieldLength;

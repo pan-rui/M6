@@ -24,6 +24,7 @@ public class AppPush  {
     }
 
     public void sendMessage(int devId, int msgType, long rmdTime,Object data) {
+    	logger.info("devId:"+devId+",msgType:"+msgType+"rmdTime:"+rmdTime+",data:"+((data==null)?"data为空":data.toString()));
         jmsQueueTemplate.send(new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {

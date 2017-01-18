@@ -52,11 +52,11 @@ public class Application {
 
         NettyServer server = appContext.getBean(NettyServer.class);
 
-        try {
+/*        try {
             TimeUnit.SECONDS.sleep(5);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         server.start();
     }
 
