@@ -7,6 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,10 +45,12 @@ public class M6Decoder extends ByteToMessageDecoder {
             if (join[0]) {
                 byte[] bytes = new byte[v];
                 byteBuf.readBytes(bytes);
+                Object keV=data.get(ke + ".");
+                String keVal=StringUtils.isEmpty(keV)?"":(keV+".");
                 if (k.startsWith("~")) {
-                    data.put(ke, data.get(ke + ".") + "." + ByteConvertUtil.byteArryToChars(bytes));
+                    data.put(ke, keVal + ByteConvertUtil.byteArryToChars(bytes));
                 } else {
-                    data.put(ke, data.get(ke + ".") + "." + ByteConvertUtil.byteArryToObj(bytes));
+                    data.put(ke, keVal + ByteConvertUtil.byteArryToObj(bytes));
                 }
                 join[0] = false;
             } else {
