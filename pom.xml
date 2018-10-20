@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.spring>4.3.18.RELEASE</version.spring>
         <version.netty>4.1.5.Final</version.netty>
-        <jetty.version>9.3.14.v20161028</jetty.version>
+        <jetty.version>9.3.25.v20180904</jetty.version>
     </properties>
 
 <!--    <repositories>
